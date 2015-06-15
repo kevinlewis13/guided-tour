@@ -83,7 +83,9 @@ module.exports = function(app) { //app === an angular module
     $scope.launchMap = function() {
       $scope.getPosition(function( position ) {
         $scope.initializeMap( position, function( map ) {
-          console.log( position );
+          $scope.watchPosition(function( position ) {
+            $scope.addMarker( map, position );
+          });
         });
       });
     };
