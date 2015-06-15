@@ -5,9 +5,8 @@ var geolib = require('geolib');
 module.exports = function(app) { //app === an angular module
   app.controller('takeTourController', ['$scope', '$http', 'RESTResource', function($scope, $http, restResource) {
     var Tour = restResource('tours');
-    $scope.errors = []; //so you can just throw errors in here as they happen
-    $scope.tours = []; //(we need these to be $scope. so that we can access them in the view)
-    $scope.appMode = 'editing';
+    $scope.errors = [];
+    $scope.tours = [{name: 'Tour 1'}, {name: 'Tour 2'}];
 
     $scope.geoOptions = {
       enableHighAccuracy: true,

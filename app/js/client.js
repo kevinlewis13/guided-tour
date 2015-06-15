@@ -11,5 +11,6 @@ require('./services/rest_resource.js')(toursApp);
 require('./controllers/tours_controller.js')(toursApp);
 
 //directives
-// require('./directives/simple_directive.js')(toursApp);
-// require('./tours/directives/route_form_directive.js')(toursApp);
+require('./directives/tour_list_directive.js')(toursApp); //Getting and showing our list of tours
+//require('./directives/nav_directive.js')(toursApp); //Showing the map to next stop
+//require('./directives/waypoint_info_directive.js')(toursApp); //showing info about a stop once user gets there

@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="">
+<html class="no-js" lang="en">
   <head>
     <meta charset="utf-8">
     <title>Guided Tours</title>
@@ -11,10 +11,16 @@
   <body>
     <div data-ng-app="toursApp">
       <main data-ng-controller="takeTourController">
+
+        <h1>Tour Guide App!</h1>
+        <!-- Tour List -->
+        <div data-tour-list-directive
+             data-tours="tours"></div>
         <section id="map"></section>
+
       </main>
     </div>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
-    <script src="bundle.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+    <script type="text/javascript" src="bundle.js"></script>
   </body>
 </html>
