@@ -119,9 +119,8 @@ module.exports = function(grunt) {
 
     //task automation
     watch: {
-      files: [],
       js: {
-        files: ['app/**/*.js'],
+        files: ['app/js/**/*.js'],
         tasks: ['build'],
         options: {
           livereload: true
@@ -146,15 +145,14 @@ module.exports = function(grunt) {
     nodemon: {
       dev: {
         script: 'server.js',
-        options: {
-          watch: ['backend/']
-        }
       }
     }
   });
 
-  grunt.registerTask('build:dev', ['webpack:client', 'copy:html', 'copy:css']);
+  grunt.registerTask('build:dev', ['webpack:client', 'sass', 'copy:html', 'copy:css']);
   grunt.registerTask('build:test', ['webpack:karma_test']);
   grunt.registerTask('build', ['build:dev', 'build:test']);
   grunt.registerTask('linter', ['jshint']);
+  grunt.registerTask('serve:dev', [ 'build:dev', 'nodemon:dev', 'watch']);
+
 };
