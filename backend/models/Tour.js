@@ -17,7 +17,7 @@ var tourSchema = new mongoose.Schema({
     longitude: Number
   },
   route: [
-    landmark: {
+    {
       position: {
         latitude; Number,
         longitude: Number
