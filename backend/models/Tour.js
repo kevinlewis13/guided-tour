@@ -6,8 +6,10 @@ var tourSchema = new mongoose.Schema({
   name: String,
   creator: String,
   description: String,
+  category: String,
+  rating: String,
   length: {
-    length: Number,
+    distance: Number,
     units: String
   },
   startPosition: {
@@ -16,11 +18,13 @@ var tourSchema = new mongoose.Schema({
   },
   route: [
     landmark: {
-      name: String,
-      artifact: String,
       position: {
         latitude; Number,
         longitude: Number
+      },
+      artifact: {
+        description: String,
+        url: String
       }
     }
   ]
