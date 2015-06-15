@@ -9,6 +9,7 @@ module.exports = function(grunt) {
   //task automation
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-nodemon');
+  grunt.loadNpmTasks('grunt-concurrent');
   //linting
   grunt.loadNpmTasks('grunt-contrib-jshint');
   //might need to add grunt-concurrent to run nodemon and watch simulatneously in one tab
@@ -122,23 +123,14 @@ module.exports = function(grunt) {
       js: {
         files: ['app/js/**/*.js'],
         tasks: ['build'],
-        options: {
-          livereload: true
-        }
       },
       html: {
         files: ['app/**/*.html'],
         tasks: ['copy:html'],
-        options: {
-          livereload: true
-        }
       },
       css: {
         files: ['app/**/*.scss'],
         tasks: ['sass', 'copy:css'],
-        options: {
-          livereload: true
-        }
       }
     },
     //not sure if/how this works. check with Stefan
@@ -146,6 +138,10 @@ module.exports = function(grunt) {
       dev: {
         script: 'server.js',
       }
+    },
+    concurrent: {
+      nodemonWatch: ['nodemon:dev', 'watch'],
+
     }
   });
 
@@ -153,6 +149,6 @@ module.exports = function(grunt) {
   grunt.registerTask('build:test', ['webpack:karma_test']);
   grunt.registerTask('build', ['build:dev', 'build:test']);
   grunt.registerTask('linter', ['jshint']);
-  grunt.registerTask('serve:dev', [ 'build:dev', 'nodemon:dev', 'watch']);
+  grunt.registerTask('serve:dev', [ 'build:dev', 'concurrent:nodemonWatch' ]);
 
 };
