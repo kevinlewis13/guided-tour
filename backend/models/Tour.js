@@ -13,11 +13,7 @@ var tourSchema = new mongoose.Schema({
     units: String
   },
   route: [
-<<<<<<< HEAD
     {
-=======
-          {
->>>>>>> 7493174c4fc1c3f150faff1438e6f7aee43ce208
       position: {
         type: { type: String },
         coordinates: [Number]
