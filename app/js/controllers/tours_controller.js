@@ -8,24 +8,26 @@ module.exports = function(app) { //app === an angular module
     $scope.errors = [];
     $scope.appState = 'start';
     //Placeholder tours, feel free to get rid of these
-    $scope.tours = [{name: 'Tour 1', waypoints: [{name: 'Fountain'}, {name: 'Park'}]},
-                    {name: 'Tour 2', waypoints: [{name: 'Statue'}, {name: 'Graffiti'}]}];
+    // $scope.tours = [{name: 'Tour 1', waypoints: [{name: 'Fountain'}, {name: 'Park'}]},
+    //                 {name: 'Tour 2', waypoints: [{name: 'Statue'}, {name: 'Graffiti'}]}];
     $scope.currentTour = null;
     $scope.currentWaypoint = 0;
-    $scope.tour = [
-      {
-        location: {
-          latitude: 47.623974,
-          longitude: -122.335937
-        }
-      },
-      {
-        location: {
-          latitude: 47.623484,
-          longitude: -122.336570
-        }
-      }
-    ]; //(we need these to be $scope. so that we can access them in the view)
+    $scope.tour = [];
+    $scope.tours = [];
+    // $scope.tour = [
+    //   {
+    //     location: {
+    //       latitude: 47.623974,
+    //       longitude: -122.335937
+    //     }
+    //   },
+    //   {
+    //     location: {
+    //       latitude: 47.623484,
+    //       longitude: -122.336570
+    //     }
+    //   }
+    // ]; //(we need these to be $scope. so that we can access them in the view)
 
     $scope.currentPosition = {};
 
@@ -50,7 +52,7 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.addLandmark = function( map, position, options ) {
-      L.circle([ position.latitude, position.longitude ], 10, {
+      L.circle([ position[1], position[0] ], 10, {
         color: 'red',
         fill: '#fca'
       }).addTo( map );
@@ -88,6 +90,13 @@ module.exports = function(app) { //app === an angular module
         $http.get('api/tours/nearby/' + position.latitude + '/' + position.longitude )
           .success(function( data ) {
             $scope.tours = data;
+            console.log("data");
+            console.log(data);
+            console.log("data.route");
+            console.log(data[0].route);
+            $scope.tour = data[0].route
+            $scope.launchMap();
+            $scope.plotTour();
           })
           .error(function( err ) {
             $scope.errors.push( err );
@@ -121,15 +130,15 @@ module.exports = function(app) { //app === an angular module
 
     $scope.plotTour = function() {
       $scope.tour.forEach(function( landmark ) {
-        var lat = landmark.location.latitude;
-        var lng = landmark.location.longitude;
-        $scope.addLandmark( $scope.map, landmark.location )
-        console.log( landmark.location );
+        // var lat = landmark.position.coordinates[1];
+        // var lng = landmark.position.coordinates[0];
+        $scope.addLandmark( $scope.map, landmark.position.coordinates )
+        console.log( landmark.position.coordinates );
       });
     };
 
-    $scope.launchMap();
-    $scope.plotTour();
+    // $scope.launchMap();
+    // $scope.plotTour();
 
     $scope.clearErrors = function() {
       $scope.errors = [];
