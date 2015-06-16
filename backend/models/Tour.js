@@ -12,15 +12,11 @@ var tourSchema = new mongoose.Schema({
     distance: Number,
     units: String
   },
-  startPosition: {
-    latitude: Number,
-    longitude: Number
-  },
   route: [
-    landmark: {
+          {
       position: {
-        latitude; Number,
-        longitude: Number
+        type: { type: String },
+        coordinates: [Number]
       },
       artifact: {
         description: String,
@@ -29,6 +25,9 @@ var tourSchema = new mongoose.Schema({
     }
   ]
 });
+
+// fix error: unable to find index for $geoNear query
+tourSchema.index({ "route.0.position": '2dsphere' });
 
 module.exports = mongoose.model('Tour', tourSchema);
 
