@@ -23,7 +23,7 @@ module.exports = function(router) {
   router.get("/tours", function(req, res) {
     Tour.find({}, function(err, tours) {
       if (err) {
-        console..log(err);
+        console.log(err);
         return res.status(500).json({ msg: "Error retrieving all tours"})
       }
       return res.json(tours);
@@ -41,5 +41,3 @@ module.exports = function(router) {
     });
   });
 };
-
-
