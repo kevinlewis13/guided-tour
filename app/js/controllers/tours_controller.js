@@ -7,28 +7,40 @@ module.exports = function(app) { //app === an angular module
     var Tour = restResource('tours');
     $scope.errors = [];
     $scope.appState = 'start';
+    //Placeholder tours, feel free to get rid of these
     $scope.tours = [{name: 'Tour 1', waypoints: [{name: 'Fountain'}, {name: 'Park'}]},
                     {name: 'Tour 2', waypoints: [{name: 'Statue'}, {name: 'Graffiti'}]}];
     $scope.currentTour = null;
     $scope.currentWaypoint = 0;
+    $scope.tour = [
+      {
+        location: {
+          latitude: 47.623974,
+          longitude: -122.335937
+        }
+      },
+      {
+        location: {
+          latitude: 47.623484,
+          longitude: -122.336570
+        }
+      }
+    ]; //(we need these to be $scope. so that we can access them in the view)
+
+    $scope.currentPosition = {};
 
     $scope.geoOptions = {
       enableHighAccuracy: true,
       maximumAge: 8000
     };
 
-    $scope.initializeMap = function( position, callback ) {
-      var map = L.map('map', {
-        center: [ position.latitude, position.longitude ],
-        zoom: 18
-      });
+    $scope.map = L.map('map');
+
+    $scope.initializeMap = function() {
       L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: 'Map data',
           maxZoom: 19
-        }).addTo( map );
-      if ( typeof callback === 'function' ) {
-        callback( map );
-      }
+        }).addTo( $scope.map );
     };
 
     $scope.addMarker = function( map, position ) {
@@ -37,7 +49,14 @@ module.exports = function(app) { //app === an angular module
       }).addTo( map );
     };
 
-    // $scope.isNear = function( position,/ )
+    $scope.addLandmark = function( map, position, options ) {
+      L.circle([ position.latitude, position.longitude ], 10, {
+        color: 'red',
+        fill: '#fca'
+      }).addTo( map );
+    };
+
+    // $scope.isNear = function( position, )
 
     $scope.handleGeoError = function( err ) {
       $scope.errors.push({ message: 'Could not get location', error: err });
@@ -83,17 +102,34 @@ module.exports = function(app) { //app === an angular module
       });
     };
 
+    $scope.updatePosition = function( position ) {
+      $scope.currentPosition = {
+        latitude: position.latitude,
+        longitude: position.longitude
+      }
+      console.log( position );
+    };
+
+
     $scope.launchMap = function() {
-      $scope.getPosition(function( position ) {
-        $scope.initializeMap( position, function( map ) {
-          $scope.watchPosition(function( position ) {
-            $scope.addMarker( map, position );
-          });
-        });
+      $scope.initializeMap();
+      $scope.watchPosition(function( position ) {
+        $scope.map.setView([ position.latitude, position.longitude ], 18 );
+        $scope.updatePosition( position );
+      });
+    };
+
+    $scope.plotTour = function() {
+      $scope.tour.forEach(function( landmark ) {
+        var lat = landmark.location.latitude;
+        var lng = landmark.location.longitude;
+        $scope.addLandmark( $scope.map, landmark.location )
+        console.log( landmark.location );
       });
     };
 
     $scope.launchMap();
+    $scope.plotTour();
 
     $scope.clearErrors = function() {
       $scope.errors = [];

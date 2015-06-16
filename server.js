@@ -1,12 +1,20 @@
-'use strict';
+'use strict'
 
-var port = process.env.PORT || 3000;
-
+var mongoose = require('mongoose');
 var express = require('express');
+
 var app = express();
 
-app.use(express.static('./build'));
+var toursRouter = express.Router();
 
-var server = app.listen( port , function() {
-  console.log('Server started on port ' + port );
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/tours_development');
+
+app.use(express.static(__dirname + '/build'));
+
+require('./backend/routes/tours_routes')(toursRouter);
+
+app.use('/api', toursRouter);
+
+app.listen(process.env.PORT || 3000, function() {
+  console.log('server running on port ' + (process.env.PORT || 3000));
 });
