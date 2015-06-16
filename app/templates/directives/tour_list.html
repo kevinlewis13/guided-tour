@@ -1,5 +1,5 @@
 <ul data-ng-repeat="tour in tours">
   <li>{{tour.name}}
-    <!-- <button data-ng-disabled="!tour._id" data-ng-click="selectTour(tour)">Select</button> -->
+    <button data-ng-click="changeState({state: 'start'})">Revert</button>
   </li>
 </ul>

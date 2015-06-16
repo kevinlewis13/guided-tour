@@ -8,7 +8,8 @@ module.exports = function(app) {
       templateUrl: '/templates/directives/tour_list.html',
       scope: {
         //getNearby: '&',
-        tours: '&'
+        tours: '=',
+        changeState: '&'
       },
       transclude: true //not sure if we'll need this, but if we do I'd rather it start breaking things early on
     };

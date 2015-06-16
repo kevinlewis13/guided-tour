@@ -13,10 +13,19 @@
       <main data-ng-controller="takeTourController">
 
         <h1>Tour Guide App!</h1>
+        <!-- Start button -->
+        <button data-ng-if="appState === 'start'" data-ng-click="changeState('list')">Find Nearby Tours</button>
+
         <!-- Tour List -->
-        <div data-tour-list-directive
-             data-tours="tours"></div>
-        <section id="map"></section>
+        <div data-ng-if="appState === 'list'"
+             data-tour-list-directive
+             data-tours="tours"
+             data-change-state="changeState(state)"></div>
+
+        <!-- Navigation -->
+        <section data-ng-if="showMap" id="map"></section>
+
+        <!-- Site info -->
 
       </main>
     </div>
