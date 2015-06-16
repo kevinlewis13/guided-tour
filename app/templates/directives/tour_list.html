@@ -1,0 +1,10 @@
+<div>
+<h1>Nearby Tours:</h1>
+<ul data-ng-repeat="tour in tours">
+  <li>{{$index}}: {{tour.name}}
+    <button data-ng-click="startTour({tour: tour})">Select</button>
+  </li>
+</ul>
+
+<button data-ng-click="changeState({state: 'start'})">Return To Start</button>
+</div>

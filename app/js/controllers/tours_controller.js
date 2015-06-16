@@ -5,7 +5,13 @@ var geolib = require('geolib');
 module.exports = function(app) { //app === an angular module
   app.controller('takeTourController', ['$scope', '$http', 'RESTResource', function($scope, $http, restResource) {
     var Tour = restResource('tours');
-    $scope.errors = []; //so you can just throw errors in here as they happen
+    $scope.errors = [];
+    $scope.appState = 'start';
+    //Placeholder tours, feel free to get rid of these
+    $scope.tours = [{name: 'Tour 1', waypoints: [{name: 'Fountain'}, {name: 'Park'}]},
+                    {name: 'Tour 2', waypoints: [{name: 'Statue'}, {name: 'Graffiti'}]}];
+    $scope.currentTour = null;
+    $scope.currentWaypoint = 0;
     $scope.tour = [
       {
         location: {
@@ -26,7 +32,7 @@ module.exports = function(app) { //app === an angular module
     $scope.geoOptions = {
       enableHighAccuracy: true,
       maximumAge: 8000
-    }
+    };
 
     $scope.map = L.map('map');
 
@@ -63,7 +69,7 @@ module.exports = function(app) { //app === an angular module
           if ( typeof callback === 'function' ) {
             callback( position.coords );
           }
-        }, $scope.handleGeoError, $scope.geoOptions )
+        }, $scope.handleGeoError, $scope.geoOptions );
       }
     };
 
@@ -73,7 +79,7 @@ module.exports = function(app) { //app === an angular module
           if ( typeof callback === 'function' ) {
             callback( position.coords );
           }
-        }, $scope.handleGeoError, $scope.geoOptions )
+        }, $scope.handleGeoError, $scope.geoOptions );
       }
     };
 
@@ -85,7 +91,7 @@ module.exports = function(app) { //app === an angular module
           })
           .error(function( err ) {
             $scope.errors.push( err );
-          })
+          });
       });
     };
 
@@ -128,6 +134,38 @@ module.exports = function(app) { //app === an angular module
     $scope.clearErrors = function() {
       $scope.errors = [];
       $scope.getAll();
+    };
+
+    $scope.changeState = function(state) {
+      $scope.appState = state;
+      if (state === 'list') {
+        $scope.currentWaypoint = 0; //quick solution, eventually should only happen when you finish a tour.
+      }
+      //States:
+      //start
+      //list
+      //navigation
+      //info
+    };
+
+    $scope.startTour = function(tour) {
+      if ($scope.currentTour !== tour) {
+        $scope.currentTour = tour;
+        $scope.currentWaypoint = 0;
+      }
+      $scope.changeState('navigation');
+    };
+
+    $scope.nextWaypoint = function() {
+      if ($scope.currentWaypoint < $scope.currentTour.waypoints.length - 1) {
+        $scope.currentWaypoint++;
+      }
+    };
+
+    $scope.prevWaypoint = function() {
+      if ($scope.currentWaypoint > 0) {
+        $scope.currentWaypoint--;
+      }
     };
   }]); //end app.controller
 }; //end module.exports
