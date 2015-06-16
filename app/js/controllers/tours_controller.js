@@ -7,7 +7,7 @@ module.exports = function(app) { //app === an angular module
     var Tour = restResource('tours');
     $scope.errors = [];
     $scope.tours = [{name: 'Tour 1'}, {name: 'Tour 2'}];
-    var appState = 'start';
+    $scope.appState = 'start';
 
     $scope.geoOptions = {
       enableHighAccuracy: true,
@@ -98,7 +98,7 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.changeState = function(state) {
-      appState = state;
+      $scope.appState = state;
       //States:
       //start
       //list

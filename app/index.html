@@ -17,13 +17,14 @@
         <button data-ng-if="appState === 'start'" data-ng-click="changeState('list')">Find Nearby Tours</button>
 
         <!-- Tour List -->
-        <div data-ng-if="appState === 'list'"
-             data-tour-list-directive
+        <div data-ng-if="appState === 'list'">
+        <div data-tour-list-directive
              data-tours="tours"
              data-change-state="changeState(state)"></div>
+        </div>
 
         <!-- Navigation -->
-        <section data-ng-if="showMap" id="map"></section>
+        <section id="map"></section>
 
         <!-- Site info -->
 
