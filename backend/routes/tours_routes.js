@@ -6,7 +6,7 @@ var Tour       = require("../models/Tour.js");
 module.exports = function(router) {
   router.use( bodyparser.json() );
 
-  router.get("/tours/:lat/:long", function(req, res) {
+  router.get("/tours/nearby/:lat/:long", function(req, res) {
     var longitude = req.params.long;
     var latitude  = req.params.lat;
 
