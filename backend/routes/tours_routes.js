@@ -6,7 +6,7 @@ var Tour       = require("../models/Tour.js");
 module.exports = function(router) {
   router.use( bodyparser.json() );
 
-  router.get("/tours/:long/:lat", function(req, res) {
+  router.get("/tours/nearby/:lat/:long", function(req, res) {
     var longitude = req.params.long;
     var latitude  = req.params.lat;
 
@@ -14,12 +14,21 @@ module.exports = function(router) {
       $near: { type: "Point", coordinates: [ longitude, latitude]}, $maxDistance: 400 }}, function(err, tours) {
         if (err) {
           console.log(err);
-          res.json({msg: "Error getting tours"});
+          return res.status(500).json({msg: "Error getting tours"});
         }
-       res.json(tours);
+       return res.json(tours);
    });
   });
 
+  router.get("/tours", function(req, res) {
+    Tour.find({}, function(err, tours) {
+      if (err) {
+        console..log(err);
+        return res.status(500).json({ msg: "Error retrieving all tours"})
+      }
+      return res.json(tours);
+    })
+  })
   router.post("/tours/create_tour", function(req, res) {
     var newTour = new Tour(req.body);
 
@@ -28,7 +37,7 @@ module.exports = function(router) {
             console.log( 'Error creating tour. Error: ', err );
             return res.status(500).json({ "success": false });
           };
-          res.json({ "success": true });
+          return res.json({ "success": true });
     });
   });
 };
