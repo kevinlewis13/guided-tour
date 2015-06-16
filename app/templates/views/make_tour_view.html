@@ -1,0 +1,12 @@
+<div data-ng-controller="createTourController">
+  <h1>Create A Tour</h1>
+  <div id="map"></div>
+  <div data-ng-if="landmarks">
+    <ol data-ng-repeat="landmark in landmarks">
+      <li>
+        <h2>{{ landmark.title }}</h2>
+      </li>
+    </ol>
+  </div>
+  <button data-ng-click="addPin()">Drop Pin</button>
+</div>
