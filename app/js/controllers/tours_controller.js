@@ -36,9 +36,13 @@ module.exports = function(app) { //app === an angular module
       maximumAge: 8000
     };
 
-    $scope.map = L.map('map');
+    $scope.map;
 
-    $scope.initializeMap = function() {
+    $scope.loadMap = function() {
+      $scope.map = L.map('map');
+    }
+
+    $scope.attachImagesToMap = function() {
       L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: 'Map data',
           maxZoom: 19
@@ -121,7 +125,7 @@ module.exports = function(app) { //app === an angular module
 
 
     $scope.launchMap = function() {
-      $scope.initializeMap();
+      $scope.attachImagesToMap();
       $scope.watchPosition(function( position ) {
         $scope.map.setView([ position.latitude, position.longitude ], 18 );
         $scope.updatePosition( position );
