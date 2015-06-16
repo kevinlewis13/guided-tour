@@ -12,22 +12,40 @@
     <div data-ng-app="toursApp">
       <main data-ng-controller="takeTourController">
 
-        <h1>Tour Guide App!</h1>
-        <!-- Start button -->
-        <button data-ng-if="appState === 'start'" data-ng-click="changeState('list')">Find Nearby Tours</button>
+        <!-- Start button / Home Screen -->
+        <div data-ng-if="appState === 'start'">
+          <h2>Tour Guide App</h2>
+          <button data-ng-click="changeState('list')">Find Nearby Tours</button>
+        </div>
 
         <!-- Tour List -->
         <div data-ng-if="appState === 'list'">
         <div data-tour-list-directive
              data-tours="tours"
-             data-change-state="changeState(state)"></div>
+             data-change-state="changeState(state)"
+             data-start-tour="startTour(tour)"></div>
         </div>
 
         <!-- Navigation -->
+        <div data-ng-if="appState === 'navigation'">
+        <div data-nav-directive
+             data-tour="currentTour"
+             data-current-waypoint="currentWaypoint"
+             data-prev-waypoint="prevWaypoint()"
+             data-next-waypoint="nextWaypoint()"
+             data-change-state="changeState(state)"></div>
+        </div>
+
+        <!-- Waypoint info -->
+        <div data-ng-if="appState === 'info'">
+        <div data-waypoint-info-directive
+             data-tour="currentTour"
+             data-current-waypoint="currentWaypoint"
+             data-next-waypoint="nextWaypoint()"
+             data-change-state="changeState(state)"></div>
+        </div>
+
         <section id="map"></section>
-
-        <!-- Site info -->
-
       </main>
     </div>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
