@@ -106,7 +106,7 @@ module.exports = function(app) { //app === an angular module
       $scope.currentPosition = {
         latitude: position.latitude,
         longitude: position.longitude
-      }
+      };
       console.log( position );
     };
 
@@ -123,7 +123,7 @@ module.exports = function(app) { //app === an angular module
       $scope.tour.forEach(function( landmark ) {
         var lat = landmark.location.latitude;
         var lng = landmark.location.longitude;
-        $scope.addLandmark( $scope.map, landmark.location )
+        $scope.addLandmark($scope.map, landmark.location);
         console.log( landmark.location );
       });
     };

@@ -13,6 +13,8 @@ module.exports = function(grunt) {
   //linting
   grunt.loadNpmTasks('grunt-contrib-jshint');
   //might need to add grunt-concurrent to run nodemon and watch simulatneously in one tab
+  //Testing
+  grunt.loadNpmTasks('grunt-karma');
 
   grunt.initConfig({
     //main build process
@@ -108,7 +110,9 @@ module.exports = function(grunt) {
         src: ['app/**/*.js'],
         options: {
           globals: {
-            angular: true
+            angular: true,
+            L: true,
+            navigator: true
           }
         }
       },
@@ -142,9 +146,19 @@ module.exports = function(grunt) {
     concurrent: {
       nodemonWatch: ['nodemon:dev', 'watch'],
 
+    },
+
+    //Tests
+    karma: {
+      test: {
+        configFile: 'karma.conf.js'
+      }
     }
   });
 
+  grunt.registerTask('test:client', ['jshint:client', 'jshint:jasmine',
+                                     'webpack:karma_test', 'karma:test']);
+  grunt.registerTask('test', ['test:client']);
   grunt.registerTask('build:dev', ['webpack:client', 'sass', 'copy:html', 'copy:css']);
   grunt.registerTask('build:test', ['webpack:karma_test']);
   grunt.registerTask('build', ['build:dev', 'build:test']);
