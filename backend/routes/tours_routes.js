@@ -11,7 +11,7 @@ module.exports = function(router) {
     var latitude  = req.params.lat;
 
     Tour.find({"route.0.position": {
-      $near: { type: "Point", coordinates: [ longitude, latitude]}, $maxDistance: 1000000000000 }}, function(err, tours) {
+      $near: { type: "Point", coordinates: [ longitude, latitude]}, $maxDistance: 400 }}, function(err, tours) {
         if (err) {
           console.log(err);
           return res.status(500).json({msg: "Error getting tours"});
