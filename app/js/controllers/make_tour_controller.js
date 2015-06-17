@@ -40,20 +40,20 @@ module.exports = function( app ) {
       }
     };
 
-    $scope.centerMap = function() {
+    $scope.trackUser = function() {
       $scope.watchPosition(function( position ) {
         $scope.map.setView([ position.latitude, position.longitude ], 18 );
         $scope.currentPosition = {
           latitude: position.latitude,
           longitude: position.longitude
         };
-        if ( currentMarker ) {
-          $scope.map.removeLayer( currentLayer );
-          currentMarker = L.marker([ position.latitude, position.longitude ]);
+        if ( !$scope.currentPositionMarker ) {
+          $scope.currentPositionMarker = L.marker([ position.latitude, position.longitude ]);
+          $scope.currentPositionMarker.addTo( $scope.map );
+          return;
+        } else {
+          $scope.currentPositionMarker.setLatLng([ position.latitude, position.longitude ]);
         }
-        var currentMarker = L.marker([ position.latitude, position.longitude ]);
-        var currentLayer = L.layerGroup([ currentMarker ]);
-        $scope.map.addLayer( currentLayer );
       });
     };
 
@@ -94,8 +94,7 @@ module.exports = function( app ) {
     $scope.init = function() {
       $scope.loadMap();
       $scope.attachImagesToMap();
-      $scope.centerMap();
+      $scope.trackUser();
     };
-
   }]);
 };

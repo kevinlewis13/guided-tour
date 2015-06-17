@@ -69,7 +69,7 @@ describe('takeTourController', function() {
 
     it('should be able to get nearby tours', function() {
       $scope.testingPosition = {latitude: 123.4, longitude: 567.8};
-      $httpBackend.expectGET('api/tours/nearby/123.4/567.8').respond(200, [testTour]);
+      $httpBackend.expectGET('/api/tours/nearby/123.4/567.8').respond(200, [testTour]);
 
       $scope.getNearby();
       $scope.tours = null;
@@ -90,7 +90,7 @@ describe('takeTourController', function() {
     //We can do error testing here much more easily than in our integration tests
     it('should correctly handle errors', function() {
       $scope.testingPosition = {latitude: 123.4, longitude: 567.8};
-      $httpBackend.expectGET('api/tours/nearby/123.4/567.8')
+      $httpBackend.expectGET('/api/tours/nearby/123.4/567.8')
         .respond(500, {msg: 'internal server error'});
       $scope.getNearby();
 
