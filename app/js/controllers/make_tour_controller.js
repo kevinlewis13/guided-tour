@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function( app ) {
-  app.controller('makeTourController', [ '$scope', 'leafletData', '$http', function( $scope, leafletData, $http ) {
+  app.controller('makeTourController', [ '$scope', 'leafletData', '$http', '$location', function( $scope, leafletData, $http, $location ) {
     $scope.errors = [];
     $scope.landmarks = [];
     $scope.currentPositionMarker;
@@ -60,6 +60,10 @@ module.exports = function( app ) {
         .error(function( err ) {
           $scope.errors.push({ message: 'Could not create tour', error: err })
         })
+    }
+
+    $scope.goHome = function() {
+      $location.path('/');
     }
 
   }]);
