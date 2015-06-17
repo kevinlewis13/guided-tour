@@ -22,6 +22,7 @@ module.exports = function(app) { //app === an angular module
 
     $scope.loadMap = function() {
       $scope.map = L.map('map');
+      $scope.getNearby();
     }
 
     $scope.attachImagesToMap = function() {
@@ -152,6 +153,7 @@ module.exports = function(app) { //app === an angular module
       $scope.changeState = false; // to get buttons to leave, most likely there's a better wayfmarker
       $scope.tour = tour.tour.route;
       $scope.watchPosition(function( position) {
+        $scope.userPosition = position;
         $scope.addMarker($scope.map, position);
       });
       $scope.plotTour();
