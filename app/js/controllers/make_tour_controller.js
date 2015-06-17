@@ -87,10 +87,21 @@ module.exports = function( app ) {
       $location.path('/');
     }
 
+    $scope.trackLocation = function( e ) {
+      L.marker( e.latlng ).addTo( $scope.map );
+    }
     $scope.init = function() {
       $scope.loadMap();
       $scope.attachImagesToMap();
-      $scope.centerMap();
+      // $scope.centerMap();
+      $scope.map.locate({
+        watch: true,
+        setView: true,
+        enableHighAccuracy: true,
+        maximumAge: 0
+      });
+      $scope.map.on('locationfound', $scope.trackLocation )
+
     }
 
   }]);
