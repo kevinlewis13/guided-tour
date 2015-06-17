@@ -126,9 +126,6 @@ module.exports = function(app) { //app === an angular module
       });
     };
 
-    // $scope.launchMap();
-    // $scope.plotTour();
-
     $scope.clearErrors = function() {
       $scope.errors = [];
       $scope.getAll();
