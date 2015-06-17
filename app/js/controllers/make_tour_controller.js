@@ -47,13 +47,13 @@ module.exports = function( app ) {
           latitude: position.latitude,
           longitude: position.longitude
         }
-        if ( currentMarker ) {
-          $scope.map.removeLayer( currentLayer );
-          var currentMarker = L.marker([ position.latitude, position.longitude ]);          
+        if ( !$scope.currentPositionMarker ) {
+          $scope.currentPositionMarker = L.marker([ position.latitude, position.longitude ]);
+          $scope.currentPositionMarker.addTo( $scope.map );
+          return;
+        } else {
+          $scope.currentPositionMarker.setLatLng([ position.latitude, position.longitude ]);
         }
-        var currentMarker = L.marker([ position.latitude, position.longitude ]);
-        var currentLayer = L.layerGroup([ currentMarker ])
-        $scope.map.addLayer( currentLayer );
       });
     };
 
