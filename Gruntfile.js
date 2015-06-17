@@ -60,6 +60,15 @@ module.exports = function(grunt) {
         dest: 'build/',
         filter: 'isFile'
 
+      },
+       img: {
+        cwd: 'app/',
+        expand: true,
+        flatten: true,
+        src: 'stylesheet/seattle.jpg',
+        dest: 'build/',
+        filter: 'isFile'
+
       }
     },
     //resets build directory
@@ -145,7 +154,7 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('build:dev', ['webpack:client', 'sass', 'copy:html', 'copy:css']);
+  grunt.registerTask('build:dev', ['webpack:client', 'sass', 'copy:html', 'copy:css', 'copy:img']);
   grunt.registerTask('build:test', ['webpack:karma_test']);
   grunt.registerTask('build', ['build:dev', 'build:test']);
   grunt.registerTask('linter', ['jshint']);

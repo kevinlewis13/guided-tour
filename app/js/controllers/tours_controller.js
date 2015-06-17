@@ -3,7 +3,7 @@
 var geolib = require('geolib');
 
 module.exports = function(app) { //app === an angular module
-  app.controller('takeTourController', ['$scope', '$http', 'RESTResource', '$location', function($scope, $http, restResource, $location) {
+  app.controller('takeTourController', ['$scope', 'RESTResource', '$location', function($scope, restResource, $location) {
     var Tour = restResource('tours');
     $scope.errors          = [];
     $scope.appState        = 'start';
@@ -12,6 +12,8 @@ module.exports = function(app) { //app === an angular module
     $scope.tour            = [];
     $scope.tours           = [];
     $scope.currentPosition = {};
+    $scope.geoWatch = null;
+    $scope.onTour;
 
     $scope.geoOptions = {
       enableHighAccuracy: true,
@@ -26,17 +28,17 @@ module.exports = function(app) { //app === an angular module
 
     $scope.loadMap = function() {
       $scope.map = L.map('map');
+      $scope.attachImagesToMap();
+      $scope.findUser();
       $scope.getNearby();
     }
 
     $scope.attachImagesToMap = function() {
       L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: 'Map data',
           maxZoom: 19
         }).addTo( $scope.map );
     };
 
-    var marker;
     $scope.addMarker = function( map, position ) {
       L.marker([ position.latitude, position.longitude ], {
         title: 'Here!'
@@ -67,7 +69,10 @@ module.exports = function(app) { //app === an angular module
 
     $scope.watchPosition = function( callback ) {
       if ( navigator.geolocation ) {
-        navigator.geolocation.watchPosition(function( position ) {
+        if ( window.watcher ) {
+          navigator.geolocation.clearWatch( window.watcher );
+        }
+        window.watcher = navigator.geolocation.watchPosition(function( position ) {
           if ( typeof callback === 'function' ) {
             callback( position.coords );
           }
@@ -76,25 +81,12 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.getNearby = function() {
-      if(marker) { // to remove markers when going back to select another tour...
-        map.removeLayer(marker);
-      }
-      $scope.changeState = true; // to get buttons to reappear
       $scope.getPosition(function( position ) {
-        $http.get('api/tours/nearby/' + position.latitude + '/' + position.longitude )
-          .success(function( data ) {
-            $scope.tours = data;
-            console.log("data");
-            console.log(data);
-            console.log("data.route");
-            console.log(data[0].route);
-            // $scope.tour = data[0].route
-            $scope.launchMap();
-            // $scope.plotTour();
-          })
-          .error(function( err ) {
-            $scope.errors.push( err );
-          });
+        //console.log('derp position: ' + position);
+        Tour.getNearby(position, function(err, data) {
+          if (err) return $scope.errors.push({msg: 'could not get nearby tours'});
+          $scope.tours = data;
+        });
       });
     };
 
@@ -113,9 +105,7 @@ module.exports = function(app) { //app === an angular module
       console.log( position );
     };
 
-
-    $scope.launchMap = function() {
-      $scope.attachImagesToMap();
+    $scope.findUser = function() {
       $scope.watchPosition(function( position ) {
         $scope.map.setView([ position.latitude, position.longitude ], 18 ); // Set view centered on current position
         $scope.updatePosition( position );
@@ -131,25 +121,22 @@ module.exports = function(app) { //app === an angular module
       });
     };
 
-    // $scope.launchMap();
-    // $scope.plotTour();
-
     $scope.clearErrors = function() {
       $scope.errors = [];
       $scope.getAll();
     };
 
-    $scope.changeState = function(state) {
-      $scope.appState = state;
-      if (state === 'list') {
-        $scope.currentWaypoint = 0; //quick solution, eventually should only happen when you finish a tour.
-      }
-      //States:
-      //start
-      //list
-      //navigation
-      //info
-    };
+    // $scope.changeState = function(state) {
+    //   $scope.appState = state;
+    //   if (state === 'list') {
+    //     $scope.currentWaypoint = 0; //quick solution, eventually should only happen when you finish a tour.
+    //   }
+    //   //States:
+    //   //start
+    //   //list
+    //   //navigation
+    //   //info
+    // };
 
     var latLandMark;
     var lngLandmark;
@@ -179,7 +166,7 @@ module.exports = function(app) { //app === an angular module
     $scope.startTour = function(tour) {
       // console.log("this is tour passed in");
       // console.log(tour.tour);
-      $scope.changeState = false; // to get buttons to leave, most likely there's a better wayfmarker
+      $scope.onTour = true; // to get buttons to leave, most likely there's a better wayfmarker
       $scope.tour = tour.tour.route;
       $scope.watchPosition(function( position) {
         $scope.compareDistance(tour, position);
