@@ -1,4 +1,37 @@
-<div data-ng-controller="takeTourController">
+<div data-ng-controller="takeTourController" data-ng-init="loadMap()">
+ <div>
+ <div data-ng-if="changeState">
+    <h2>Tour Guide App</h2>
+    <!-- <button data-ng-click="getNearby()">Find Nearby Tours</button> -->
+<h1 data-ng-if="changeState">Nearby Tours:</h1>
+<ul data-ng-repeat="tour in tours">
+  <li>
+    <h4>{{tour.name}}</h4>
+    <p>Description: {{tour.description}}</p>
+    <button data-ng-click="startTour({tour: tour})">Take This Tour</button>
+    <!-- <button data-ng-click="moreInfo()">More Information</button> -->
+
+  </li>
+</ul>
+  </div>
+  <section id="map"></section>
+
+</div>
+
+<!-- <button data-ng-click="changeState({state: 'start'})">Return To Start</button> -->
+</div>
+
+ <!--  <div>
+    <h2>Tour Guide App</h2>
+    <button data-ng-click="getNearby()">Find Nearby Tours</button>
+      <div>
+<h1>Nearby Tours:</h1>
+<ul data-ng-repeat="tour in tours">
+  <li>{{tour.name}}
+    <button data-ng-click="startTour({tour: tour})">Select</button>
+  </li>
+</ul>
+  </div>
   <section id="map"></section>
   <section id="content">
     <h1>Title Here</h1>
@@ -6,4 +39,4 @@
       <input type="text">
     </form>
   </section>
-</div>
+</div> -->

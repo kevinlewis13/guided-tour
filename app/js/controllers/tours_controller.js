@@ -5,28 +5,12 @@ var geolib = require('geolib');
 module.exports = function(app) { //app === an angular module
   app.controller('takeTourController', ['$scope', '$http', 'RESTResource', function($scope, $http, restResource) {
     var Tour = restResource('tours');
-    $scope.errors = [];
-    $scope.appState = 'start';
-    //Placeholder tours, feel free to get rid of these
-    $scope.tours = [{name: 'Tour 1', waypoints: [{name: 'Fountain'}, {name: 'Park'}]},
-                    {name: 'Tour 2', waypoints: [{name: 'Statue'}, {name: 'Graffiti'}]}];
-    $scope.currentTour = null;
+    $scope.errors          = [];
+    $scope.appState        = 'start';
+    $scope.currentTour     = null;
     $scope.currentWaypoint = 0;
-    $scope.tour = [
-      {
-        location: {
-          latitude: 47.623974,
-          longitude: -122.335937
-        }
-      },
-      {
-        location: {
-          latitude: 47.623484,
-          longitude: -122.336570
-        }
-      }
-    ]; //(we need these to be $scope. so that we can access them in the view)
-
+    $scope.tour            = [];
+    $scope.tours           = [];
     $scope.currentPosition = {};
 
     $scope.geoOptions = {
@@ -34,15 +18,21 @@ module.exports = function(app) { //app === an angular module
       maximumAge: 8000
     };
 
-    $scope.map = L.map('map');
+    $scope.map;
 
-    $scope.initializeMap = function() {
+    $scope.loadMap = function() {
+      $scope.map = L.map('map');
+      $scope.getNearby();
+    }
+
+    $scope.attachImagesToMap = function() {
       L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: 'Map data',
           maxZoom: 19
         }).addTo( $scope.map );
     };
 
+    var marker;
     $scope.addMarker = function( map, position ) {
       L.marker([ position.latitude, position.longitude ], {
         title: 'Here!'
@@ -50,13 +40,11 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.addLandmark = function( map, position, options ) {
-      L.circle([ position.latitude, position.longitude ], 10, {
+      L.circle([ position[1], position[0] ], 10, {
         color: 'red',
         fill: '#fca'
       }).addTo( map );
     };
-
-    // $scope.isNear = function( position, )
 
     $scope.handleGeoError = function( err ) {
       $scope.errors.push({ message: 'Could not get location', error: err });
@@ -84,10 +72,21 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.getNearby = function() {
+      if(marker) { // to remove markers when going back to select another tour...
+        map.removeLayer(marker);
+      }
+      $scope.changeState = true; // to get buttons to reappear
       $scope.getPosition(function( position ) {
         $http.get('api/tours/nearby/' + position.latitude + '/' + position.longitude )
           .success(function( data ) {
             $scope.tours = data;
+            console.log("data");
+            console.log(data);
+            console.log("data.route");
+            console.log(data[0].route);
+            // $scope.tour = data[0].route
+            $scope.launchMap();
+            // $scope.plotTour();
           })
           .error(function( err ) {
             $scope.errors.push( err );
@@ -112,24 +111,24 @@ module.exports = function(app) { //app === an angular module
 
 
     $scope.launchMap = function() {
-      $scope.initializeMap();
+      $scope.attachImagesToMap();
       $scope.watchPosition(function( position ) {
-        $scope.map.setView([ position.latitude, position.longitude ], 18 );
+        $scope.map.setView([ position.latitude, position.longitude ], 18 ); // Set view centered on current position
         $scope.updatePosition( position );
       });
     };
 
     $scope.plotTour = function() {
       $scope.tour.forEach(function( landmark ) {
-        var lat = landmark.location.latitude;
-        var lng = landmark.location.longitude;
-        $scope.addLandmark( $scope.map, landmark.location )
-        console.log( landmark.location );
+        // var lat = landmark.position.coordinates[1];
+        // var lng = landmark.position.coordinates[0];
+        $scope.addLandmark( $scope.map, landmark.position.coordinates )
+        console.log( landmark.position.coordinates );
       });
     };
 
-    $scope.launchMap();
-    $scope.plotTour();
+    // $scope.launchMap();
+    // $scope.plotTour();
 
     $scope.clearErrors = function() {
       $scope.errors = [];
@@ -149,11 +148,21 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.startTour = function(tour) {
+      // console.log("this is tour passed in");
+      // console.log(tour.tour);
+      $scope.changeState = false; // to get buttons to leave, most likely there's a better wayfmarker
+      $scope.tour = tour.tour.route;
+      $scope.watchPosition(function( position) {
+        $scope.userPosition = position;
+        $scope.addMarker($scope.map, position);
+      });
+      $scope.plotTour();
+      // $scope.addMarker($scope.map,  );
+
       if ($scope.currentTour !== tour) {
         $scope.currentTour = tour;
         $scope.currentWaypoint = 0;
       }
-      $scope.changeState('navigation');
     };
 
     $scope.nextWaypoint = function() {

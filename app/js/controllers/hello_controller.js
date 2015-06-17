@@ -5,5 +5,8 @@ module.exports = function( app ) {
     $scope.gotoNearby = function() {
       $location.path('/nearby');
     }
+    $scope.gotoMakeTour = function() {
+      $location.path('/make');
+    }
   }])
 }
