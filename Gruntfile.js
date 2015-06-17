@@ -10,6 +10,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-concurrent');
+  grunt.loadNpmTasks('grunt-autoprefixer');
   //linting
   grunt.loadNpmTasks('grunt-contrib-jshint');
   //might need to add grunt-concurrent to run nodemon and watch simulatneously in one tab
@@ -150,11 +151,16 @@ module.exports = function(grunt) {
     },
     concurrent: {
       nodemonWatch: ['nodemon:dev', 'watch'],
-
+    },
+    autoprefixer: {
+      sass: {
+        src: 'app/stylesheet/application.css',
+        dest: 'build/application.css'
+      }
     }
   });
 
-  grunt.registerTask('build:dev', ['webpack:client', 'sass', 'copy:html', 'copy:css', 'copy:img']);
+  grunt.registerTask('build:dev', ['webpack:client', 'sass', 'copy:html', 'autoprefixer:sass', 'copy:img']);
   grunt.registerTask('build:test', ['webpack:karma_test']);
   grunt.registerTask('build', ['build:dev', 'build:test']);
   grunt.registerTask('linter', ['jshint']);
