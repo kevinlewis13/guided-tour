@@ -3,7 +3,7 @@
 var geolib = require('geolib');
 
 module.exports = function(app) { //app === an angular module
-  app.controller('takeTourController', ['$scope', '$http', 'RESTResource', function($scope, $http, restResource) {
+  app.controller('takeTourController', ['$scope', '$http', 'RESTResource', '$location', function($scope, $http, restResource, $location) {
     var Tour = restResource('tours');
     $scope.errors          = [];
     $scope.appState        = 'start';
@@ -19,6 +19,10 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.map;
+
+    $scope.goHome = function() {
+      $location.path('/');
+    }
 
     $scope.loadMap = function() {
       $scope.map = L.map('map');
