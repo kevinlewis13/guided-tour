@@ -81,11 +81,10 @@ module.exports = function(app) { //app === an angular module
 
     $scope.getNearby = function() {
       $scope.getPosition(function( position ) {
-        console.log('derp position: ' + position);
+        // console.log('derp position: ' + position);
         $http.get('api/tours/nearby/' + position.latitude + '/' + position.longitude )
           .success(function( data ) {
             $scope.tours = data;
-            console.log("data: " + data );
             $scope.launchMap();
           })
           .error(function( err ) {
