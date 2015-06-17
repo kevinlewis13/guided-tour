@@ -25,18 +25,18 @@ module.exports = function(app) { //app === an angular module
     }
 
     $scope.loadMap = function() {
+      console.log('derp loadmap');
       $scope.map = L.map('map');
+      $scope.attachImagesToMap();
       $scope.getNearby();
     }
 
     $scope.attachImagesToMap = function() {
       L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: 'Map data',
           maxZoom: 19
         }).addTo( $scope.map );
     };
 
-    var marker;
     $scope.addMarker = function( map, position ) {
       L.marker([ position.latitude, position.longitude ], {
         title: 'Here!'
@@ -76,18 +76,12 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.getNearby = function() {
-      if(marker) { // to remove markers when going back to select another tour...
-        map.removeLayer(marker);
-      }
-      $scope.changeState = true; // to get buttons to reappear
       $scope.getPosition(function( position ) {
+        console.log('derp position: ' + position);
         $http.get('api/tours/nearby/' + position.latitude + '/' + position.longitude )
           .success(function( data ) {
             $scope.tours = data;
-            console.log("data");
-            console.log(data);
-            console.log("data.route");
-            console.log(data[0].route);
+            console.log("data: " + data );
             // $scope.tour = data[0].route
             $scope.launchMap();
             // $scope.plotTour();
@@ -113,9 +107,8 @@ module.exports = function(app) { //app === an angular module
       console.log( position );
     };
 
-
     $scope.launchMap = function() {
-      $scope.attachImagesToMap();
+      // $scope.attachImagesToMap();
       $scope.watchPosition(function( position ) {
         $scope.map.setView([ position.latitude, position.longitude ], 18 ); // Set view centered on current position
         $scope.updatePosition( position );
