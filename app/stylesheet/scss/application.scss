@@ -9,3 +9,124 @@ html, body {
   width: 100vw;
   height: 70vh;
 }
+
+.nav a {
+  color: #5a5a5a;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 14px 10px;
+  text-transform: uppercase;
+}
+
+.nav li {
+  display: inline;
+}
+
+.jumbotron {
+  background-image:url('./seattle.jpg');
+  height: 500px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.jumbotron .container {
+  position: relative;
+  top: 45px;
+}
+
+.jumbotron h1 {
+  color: #fff;
+  font-size: 48px;
+  font-family: 'Shift', sans-serif;
+  font-weight: bold;
+}
+
+.jumbotron p {
+  font-size: 20px;
+  color: #fff;
+}
+
+.learn-more {
+  background-color: #f7f7f7;
+}
+
+.learn-more h3 {
+  font-family: 'Shift', sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.learn-more a {
+  color: #00b0ff;
+}
+
+.neighborhood-guides {
+    background-colors: #efefef;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+.neighborhood-guides h2 {
+    color: #393c3d;
+    font-size: 24px;
+}
+
+.neighborhood-guides p {
+    font-size: 15px;
+    margin-bottom: 13px;
+}
+
+
+.btn-semi-transparent {
+  background: rgba(255,255,255,0.5);
+  border-style: none;
+    font-weight: bold;
+
+
+}
+
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  line-height: 1.1;
+  text-rendering: optimizelegibility;
+  font-weight: bold;
+}
+
+.text-contrast {
+  color: #fff;
+}
+
+.btn-contrast {
+  border-color: #565a5c;
+  border-bottom-color: #383b3c;
+  background-color: #565a5c;
+  color: #fff;
+}
+.btn {
+  display: inline-block;
+  margin-bottom: 0;
+  border-radius: 2px;
+  border: 1px solid;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: bold;
+  line-height: 1.43;
+  user-select: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.btn {
+  border-color: #c4c4c4;
+  background: white;
+  color: #565a5c;
+}
+
+.btn-large {
+  padding: 9px 27px;
+  font-size: 16px;
+}
+
+button {
+
+  background: transparent;
+
+}
