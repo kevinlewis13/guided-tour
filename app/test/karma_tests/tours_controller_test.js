@@ -64,9 +64,10 @@ describe('takeTourController', function() {
         }
       ]
     };
+    var testTour2 = JSON.parse(JSON.stringify(testTour));
+    testTour2.name = 'Test Tour 2, with a DIFFERENT NAME';
 
     it('should be able to get nearby tours', function() {
-      this.tourController = $cc('takeTourController', {$scope: $scope});
       $scope.testingPosition = {latitude: 123.4, longitude: 567.8};
       $httpBackend.expectGET('api/tours/nearby/123.4/567.8').respond(200, [testTour]);
 
@@ -76,20 +77,52 @@ describe('takeTourController', function() {
       expect(typeof $scope.tours).toBe('object');
     });
 
+    it('should be able to get all tours', function() {
+      $scope.testingPosition = {latitude: 123.4, longitude: 567.8};
+      $httpBackend.expectGET('/api/tours').respond(200, [testTour, testTour2]);
+
+      $scope.getAll();
+      $scope.tours = null;
+      $httpBackend.flush();
+      expect(typeof $scope.tours).toBe('object');
+    });
+
     //We can do error testing here much more easily than in our integration tests
     it('should correctly handle errors', function() {
       $scope.testingPosition = {latitude: 123.4, longitude: 567.8};
-      $httpBackend.expectGET('api/tours/nearby/123.4/567.8').respond(500, {msg: 'test error'});
+      $httpBackend.expectGET('api/tours/nearby/123.4/567.8')
+        .respond(500, {msg: 'internal server error'});
       $scope.getNearby();
-      $httpBackend.flush();
-      expect($scope.errors.length).toBe(1);
-      expect($scope.errors[0].msg).toBe('test error');
-      /*$httpBackend.expectGET('/api/tours').respond(500,
-        {msg: 'server error'});
+
+      $httpBackend.expectGET('/api/tours')
+        .respond(500, {msg: 'very nondescript error message'});
       $scope.getAll();
+
       $httpBackend.flush();
-      expect($scope.errors.length).toBe(1);
-      expect($scope.errors[0].msg).toBe('could not get tours');*/
+
+      expect($scope.errors.length).toBe(2);
+      expect($scope.errors[0].msg).toBe('could not get nearby tours');
+      expect($scope.errors[1].msg).toBe('could not get all tours');
+
+      $scope.clearErrors();
+      expect($scope.errors.length).toBe(0);
+    });
+
+    it('should correctly update the user\'s position', function() {
+      var testPos = {
+        latitude: 3.14159,
+        longitude: 2.65358
+      };
+      $scope.testPos = testPos;
+      testPos.latitude += 1.2345;
+      testPos.longitude -=1.2345;
+      $scope.updatePosition(testPos);
+      expect($scope.currentPosition.latitude).toBe(testPos.latitude);
+      expect($scope.currentPosition.longitude).toBe(testPos.longitude);
+    });
+
+    it('should correctly start the user on a tour', function() {
+
     });
   });
 });

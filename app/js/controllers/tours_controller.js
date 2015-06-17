@@ -11,8 +11,10 @@ module.exports = function(app) { //app === an angular module
     $scope.currentWaypoint = 0;
     $scope.tour            = [];
     $scope.tours           = [];
-    $scope.currentPosition = null;
-    $scope.map = null;
+    $scope.map = {};
+    $scope.currentPosition = {};
+    $scope.geoWatch = null;
+    $scope.onTour = null;
 
     $scope.geoOptions = {
       enableHighAccuracy: true,
@@ -25,17 +27,16 @@ module.exports = function(app) { //app === an angular module
 
     $scope.loadMap = function() {
       $scope.map = L.map('map');
+      $scope.attachImagesToMap();
       $scope.getNearby();
     };
 
     $scope.attachImagesToMap = function() {
       L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: 'Map data',
           maxZoom: 19
         }).addTo( $scope.map );
     };
 
-    var marker;
     $scope.addMarker = function( map, position ) {
       L.marker([ position.latitude, position.longitude ], {
         title: 'Here!'
@@ -68,7 +69,10 @@ module.exports = function(app) { //app === an angular module
 
     $scope.watchPosition = function( callback ) {
       if ( navigator.geolocation ) {
-        navigator.geolocation.watchPosition(function( position ) {
+        if ( window.watcher ) {
+          navigator.geolocation.clearWatch( window.watcher );
+        }
+        window.watcher = navigator.geolocation.watchPosition(function( position ) {
           if ( typeof callback === 'function' ) {
             callback( position.coords );
           }
@@ -77,31 +81,24 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.getNearby = function() {
-      if(marker) { // to remove markers when going back to select another tour...
-        $scope.map.removeLayer(marker);
-      }
-      $scope.changeState = true; // to get buttons to reappear
       $scope.getPosition(function( position ) {
+        console.log('derp position: ' + position);
         $http.get('api/tours/nearby/' + position.latitude + '/' + position.longitude )
           .success(function( data ) {
             $scope.tours = data;
-            console.log("data");
-            console.log(data);
-            console.log("data.route");
-            console.log(data[0].route);
-            // $scope.tour = data[0].route
+            console.log("data: " + data );
             $scope.launchMap();
             // $scope.plotTour();
           })
           .error(function( err ) {
-            $scope.errors.push( err );
+            $scope.errors.push({msg: 'could not get nearby tours'});
           });
       });
     };
 
     $scope.getAll = function() {
       Tour.getAll(function(err, data) {
-        if (err) return $scope.errors.push({msg: 'could not get tours'});
+        if (err) return $scope.errors.push({msg: 'could not get all tours'});
         $scope.tours = data;
       });
     };
@@ -114,9 +111,7 @@ module.exports = function(app) { //app === an angular module
       console.log( position );
     };
 
-
     $scope.launchMap = function() {
-      $scope.attachImagesToMap();
       $scope.watchPosition(function( position ) {
         $scope.map.setView([ position.latitude, position.longitude ], 18 ); // Set view centered on current position
         $scope.updatePosition( position );
@@ -137,7 +132,7 @@ module.exports = function(app) { //app === an angular module
 
     $scope.clearErrors = function() {
       $scope.errors = [];
-      $scope.getAll();
+      //$scope.getAll();
     };
 
     $scope.changeState = function(state) {
@@ -180,7 +175,7 @@ module.exports = function(app) { //app === an angular module
     $scope.startTour = function(tour) {
       // console.log("this is tour passed in");
       // console.log(tour.tour);
-      $scope.changeState = false; // to get buttons to leave, most likely there's a better wayfmarker
+      $scope.onTour = true; // to get buttons to leave, most likely there's a better wayfmarker
       $scope.tour = tour.tour.route;
       $scope.watchPosition(function( position) {
         $scope.compareDistance(tour, position);
