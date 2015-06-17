@@ -2,3 +2,4 @@
 **/bundle.js
 build
 node_modules
+**/application.css
