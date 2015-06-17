@@ -1,36 +1,57 @@
 'use strict';
 
 module.exports = function( app ) {
-  app.controller('makeTourController', [ '$scope', 'leafletData', '$http', '$location', function( $scope, leafletData, $http, $location ) {
+  app.controller('makeTourController', [ '$scope', '$http', '$location', function( $scope, $http, $location ) {
     $scope.errors = [];
     $scope.landmarks = [];
     $scope.currentPositionMarker;
+    $scope.map;
 
-    // Leaflet defaults
-    angular.extend($scope, {
-      defaults: {
-        tileLayer: '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        maxZoom: 18
+    $scope.loadMap = function() {
+      $scope.map = L.map('map');
+    }
+
+    $scope.geoOptions = {
+      enableHighAccuracy: true,
+      maximumAge: 8000
+    };
+
+    $scope.handleGeoError = function( err ) {
+      $scope.errors.push({ message: 'Could not get location', error: err });
+      console.log( err );
+    };
+
+    $scope.attachImagesToMap = function() {
+      L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19
+      }).addTo( $scope.map );
+    };
+
+    $scope.watchPosition = function( callback ) {
+      if ( navigator.geolocation ) {
+        navigator.geolocation.watchPosition(function( position ) {
+          if ( typeof callback === 'function' ) {
+            callback( position.coords );
+          }
+        }, $scope.handleGeoError, $scope.geoOptions );
       }
-    })
+    };
 
     $scope.centerMap = function() {
-      leafletData.getMap('map').then(function( map ) {
-        navigator.geolocation.watchPosition(function( position ) {
-          map.setView([ position.coords.latitude, position.coords.longitude ], 18 );
-          $scope.currentPosition = {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
-          }
-          if ( $scope.currentPositionMarker ) {
-            $scope.currentPositionMarker = null;
-            map.removeLayer( $scope.currentPositionMarker );
-          }
-          $scope.currentPositionMarker = L.marker([ position.coords.latitude, position.coords.longitude ]);
-          map.addLayer( $scope.currentPositionMarker );
-        });
+      $scope.watchPosition(function( position ) {
+        $scope.map.setView([ position.latitude, position.longitude ], 18 );
+        $scope.currentPosition = {
+          latitude: position.latitude,
+          longitude: position.longitude
+        }
+        if ( $scope.currentPositionMarker ) {
+          $scope.currentPositionMarker = null;
+          $scope.map.removeLayer( $scope.currentPositionMarker );
+        }
+        $scope.currentPositionMarker = L.marker([ position.latitude, position.longitude ]);
+        $scope.map.addLayer( $scope.currentPositionMarker );
       });
-    }
+    };
 
     $scope.addPin = function( position ) {
       var newLandmark = {
@@ -64,6 +85,12 @@ module.exports = function( app ) {
 
     $scope.goHome = function() {
       $location.path('/');
+    }
+
+    $scope.init = function() {
+      $scope.loadMap();
+      $scope.attachImagesToMap();
+      $scope.centerMap();
     }
 
   }]);
