@@ -16,10 +16,10 @@ describe('takeTourController', function() {
     $scope = $rootScope.$new();
     $cc = $controller;
     $document = _$document_;
+    angular.element($document[0].body).append('<section id="map"></section>'); //DOM element required for controller
   }));
 
   it('should be able to create a new controller', function() {
-    angular.element($document[0].body).append('<section id="map"></section>');
     var tourController = $cc('takeTourController', {$scope: $scope});
     expect(typeof tourController).toBe('object');
     expect(Array.isArray($scope.tours));
@@ -29,7 +29,7 @@ describe('takeTourController', function() {
 
 
   //a separate describe block, to have a different beforeEach and guaranteeing that these are nested
- /* describe('REST functionality', function() {
+  describe('REST functionality', function() {
     beforeEach(angular.mock.inject(function(_$httpBackend_) { //the underscores are for clarity, we could just say $httpBackend
       $httpBackend = _$httpBackend_;
       this.tourController = $cc('takeTourController', {$scope: $scope}); //gives us access to $scope.getAll
@@ -40,25 +40,25 @@ describe('takeTourController', function() {
       $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should make a get request on index', function() {
-      $httpBackend.expectGET('/api/tours').respond(200,
-        [{_id: '1', name: 'Jon Stewart', weight: 4}]);
-      $scope.getAll(); //this will actually make the request that we're expecting
-      $httpBackend.flush(); //will actually send all our responses that we've set up
-      //(this is when our callbacks in getAll, etc... will get called)
-      expect($scope.tours[0].name).toBe('Jon Stewart');
-      expect($scope.tours[0]._id).toBe('1');
-      expect($scope.tours[0].weight).toBe(4);
+    it('should be able to get nearby tours', function() {
+      $scope.testingPosition = {latitude: 123.4, longitude: 567.8};
+      $httpBackend.expectGET('api/tours/nearby/123.4/567.8').respond(200,
+        [{route: 'testData'}, {route: 'moreTestData'}]);
+
+      $scope.getNearby();
+      $scope.tours = null;
+      $httpBackend.flush();
+      expect(typeof $scope.tours).toBe('object');
     });
 
     //We can do error testing here much more easily than in our integration tests
     it('should correctly handle errors', function() {
-      $httpBackend.expectGET('/api/tours').respond(500,
+      /*$httpBackend.expectGET('/api/tours').respond(500,
         {msg: 'server error'});
       $scope.getAll();
       $httpBackend.flush();
       expect($scope.errors.length).toBe(1);
-      expect($scope.errors[0].msg).toBe('could not get tours');
+      expect($scope.errors[0].msg).toBe('could not get tours');*/
     });
-  });*/
+  });
 });

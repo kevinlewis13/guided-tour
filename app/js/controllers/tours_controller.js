@@ -61,6 +61,8 @@ module.exports = function(app) { //app === an angular module
             callback( position.coords );
           }
         }, $scope.handleGeoError, $scope.geoOptions );
+      } else if ($scope.testingPosition) {
+        callback($scope.testingPosition);
       }
     };
 
