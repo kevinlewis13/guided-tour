@@ -168,7 +168,7 @@ module.exports = function(app) { //app === an angular module
       );
       // console.log("THIS IS OUR DISTANCE");
       // console.log(distance);
-      if (distance <= 1200) {
+      if (distance <= 5) {
         console.log("INSIDE IF STATMENT");
         alert($scope.tour[count].artifact.description);
         count++;
