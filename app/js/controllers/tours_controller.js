@@ -3,7 +3,7 @@
 var geolib = require('geolib');
 
 module.exports = function(app) { //app === an angular module
-  app.controller('takeTourController', ['$scope', '$http', 'RESTResource', '$location', function($scope, $http, restResource, $location) {
+  app.controller('takeTourController', ['$scope', 'RESTResource', '$location', function($scope, restResource, $location) {
     var Tour = restResource('tours');
     $scope.errors          = [];
     $scope.appState        = 'start';
@@ -29,6 +29,7 @@ module.exports = function(app) { //app === an angular module
     $scope.loadMap = function() {
       $scope.map = L.map('map');
       $scope.attachImagesToMap();
+      $scope.findUser();
       $scope.getNearby();
     }
 
@@ -81,17 +82,11 @@ module.exports = function(app) { //app === an angular module
 
     $scope.getNearby = function() {
       $scope.getPosition(function( position ) {
-        console.log('derp position: ' + position);
-        $http.get('api/tours/nearby/' + position.latitude + '/' + position.longitude )
-          .success(function( data ) {
-            $scope.tours = data;
-            console.log("data: " + data );
-            $scope.launchMap();
-            // $scope.plotTour();
-          })
-          .error(function( err ) {
-            $scope.errors.push( err );
-          });
+        //console.log('derp position: ' + position);
+        Tour.getNearby(position, function(err, data) {
+          if (err) return $scope.errors.push({msg: 'could not get nearby tours'});
+          $scope.tours = data;
+        });
       });
     };
 
@@ -110,7 +105,7 @@ module.exports = function(app) { //app === an angular module
       console.log( position );
     };
 
-    $scope.launchMap = function() {
+    $scope.findUser = function() {
       $scope.watchPosition(function( position ) {
         $scope.map.setView([ position.latitude, position.longitude ], 18 ); // Set view centered on current position
         $scope.updatePosition( position );
@@ -126,25 +121,22 @@ module.exports = function(app) { //app === an angular module
       });
     };
 
-    // $scope.launchMap();
-    // $scope.plotTour();
-
     $scope.clearErrors = function() {
       $scope.errors = [];
       $scope.getAll();
     };
 
-    $scope.changeState = function(state) {
-      $scope.appState = state;
-      if (state === 'list') {
-        $scope.currentWaypoint = 0; //quick solution, eventually should only happen when you finish a tour.
-      }
-      //States:
-      //start
-      //list
-      //navigation
-      //info
-    };
+    // $scope.changeState = function(state) {
+    //   $scope.appState = state;
+    //   if (state === 'list') {
+    //     $scope.currentWaypoint = 0; //quick solution, eventually should only happen when you finish a tour.
+    //   }
+    //   //States:
+    //   //start
+    //   //list
+    //   //navigation
+    //   //info
+    // };
 
     var latLandMark;
     var lngLandmark;
