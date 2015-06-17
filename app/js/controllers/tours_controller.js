@@ -3,7 +3,7 @@
 var geolib = require('geolib');
 
 module.exports = function(app) { //app === an angular module
-  app.controller('takeTourController', ['$scope', '$http', 'RESTResource' '$location', function($scope, $http, restResource, $location) {
+  app.controller('takeTourController', ['$scope', '$http', 'RESTResource', '$location', function($scope, $http, restResource, $location) {
     var Tour = restResource('tours');
     $scope.errors          = [];
     $scope.appState        = 'start';
