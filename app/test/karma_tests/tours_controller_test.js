@@ -43,7 +43,7 @@ describe('takeTourController', function() {
     var testTour = {
       _id: '1',
       name: 'Test Tour',
-      creator: 'Henry Morgan',
+      creator: 'Some User',
       description: 'A rudimentary tour for testing',
       category: 'FUN',
       rating: '5.0',
