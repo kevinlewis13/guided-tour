@@ -12,6 +12,7 @@ module.exports = function(app) { //app === an angular module
     $scope.tour            = [];
     $scope.tours           = [];
     $scope.currentPosition = {};
+    $scope.geoWatch        = null;
     $scope.currentPositionMarker;
     $scope.geoWatch = null;
     $scope.onTour;
@@ -133,8 +134,7 @@ module.exports = function(app) { //app === an angular module
 
     $scope.plotTour = function() {
       $scope.tour.forEach(function( landmark ) {
-        // var lat = landmark.position.coordinates[1];
-        // var lng = landmark.position.coordinates[0];
+
         $scope.addLandmark( $scope.map, landmark.position.coordinates )
         console.log( landmark.position.coordinates );
       });
@@ -161,43 +161,27 @@ module.exports = function(app) { //app === an angular module
     var lngLandmark;
     var count = 0;
     $scope.compareDistance = function(tour, position) {
-      // console.log("this is length");
-      // console.log($scope.tour.length);
-
       lngLandmark = $scope.tour[count].position.coordinates[0];
       latLandMark = $scope.tour[count].position.coordinates[1];
-      // console.log("THIS IS CURRENT LANDMARK LONG COORDS");
-      // console.log(lngLandmark);
+
       var distance = geolib.getDistance(
         {latitude: latLandMark, longitude: lngLandmark },
         {latitude: position.latitude, longitude: position.longitude}
       );
-      // console.log("THIS IS OUR DISTANCE");
-      // console.log(distance);
+
       if (distance <= 5) {
-        console.log("INSIDE IF STATMENT");
         alert($scope.tour[count].artifact.description);
         count++;
       }
-      // console.log(count);
     }
 
     $scope.startTour = function(tour) {
-      // console.log("this is tour passed in");
-      // console.log(tour.tour);
-      $scope.onTour = true; // to get buttons to leave, most likely there's a better wayfmarker
+      $scope.onTour = true; // to get buttons to leave, most likely there's a better way
       $scope.tour = tour.tour.route;
-
       $scope.trackUser(function(position) {
         $scope.compareDistance(tour, position)
       });
-      // $scope.watchPosition(function( position) {
-      //   $scope.compareDistance(tour, position);
-      //
-      //   $scope.addMarker($scope.map, position);
-      // });
       $scope.plotTour();
-      // $scope.addMarker($scope.map,  );
 
       if ($scope.currentTour !== tour) {
         $scope.currentTour = tour;
