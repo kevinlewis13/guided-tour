@@ -29,7 +29,10 @@ module.exports = function( app ) {
 
     $scope.watchPosition = function( callback ) {
       if ( navigator.geolocation ) {
-        navigator.geolocation.watchPosition(function( position ) {
+        if ( window.watcher ) {
+          navigator.geolocation.clearWatch( window.watcher );
+        }
+        window.watcher = navigator.geolocation.watchPosition(function( position ) {
           if ( typeof callback === 'function' ) {
             callback( position.coords );
           }
@@ -37,19 +40,20 @@ module.exports = function( app ) {
       }
     };
 
-    $scope.centerMap = function() {
+    $scope.trackUser = function() {
       $scope.watchPosition(function( position ) {
         $scope.map.setView([ position.latitude, position.longitude ], 18 );
         $scope.currentPosition = {
           latitude: position.latitude,
           longitude: position.longitude
         }
-        if ( $scope.currentPositionMarker ) {
-          $scope.currentPositionMarker = null;
-          $scope.map.removeLayer( $scope.currentPositionMarker );
+        if ( !$scope.currentPositionMarker ) {
+          $scope.currentPositionMarker = L.marker([ position.latitude, position.longitude ]);
+          $scope.currentPositionMarker.addTo( $scope.map );
+          return;
+        } else {
+          $scope.currentPositionMarker.setLatLng([ position.latitude, position.longitude ]);
         }
-        $scope.currentPositionMarker = L.marker([ position.latitude, position.longitude ]);
-        $scope.map.addLayer( $scope.currentPositionMarker );
       });
     };
 
@@ -90,7 +94,7 @@ module.exports = function( app ) {
     $scope.init = function() {
       $scope.loadMap();
       $scope.attachImagesToMap();
-      $scope.centerMap();
+      $scope.trackUser();
     }
 
   }]);
