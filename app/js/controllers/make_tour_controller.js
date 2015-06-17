@@ -29,7 +29,10 @@ module.exports = function( app ) {
 
     $scope.watchPosition = function( callback ) {
       if ( navigator.geolocation ) {
-        navigator.geolocation.watchPosition(function( position ) {
+        if ( window.watcher ) {
+          navigator.geolocation.clearWatch( window.watcher );
+        }
+        window.watcher = navigator.geolocation.watchPosition(function( position ) {
           if ( typeof callback === 'function' ) {
             callback( position.coords );
           }
@@ -44,12 +47,13 @@ module.exports = function( app ) {
           latitude: position.latitude,
           longitude: position.longitude
         };
-        if ( $scope.currentPositionMarker ) {
-          $scope.currentPositionMarker = null;
-          $scope.map.removeLayer( $scope.currentPositionMarker );
+        if ( currentMarker ) {
+          $scope.map.removeLayer( currentLayer );
+          currentMarker = L.marker([ position.latitude, position.longitude ]);
         }
-        $scope.currentPositionMarker = L.marker([ position.latitude, position.longitude ]);
-        $scope.map.addLayer( $scope.currentPositionMarker );
+        var currentMarker = L.marker([ position.latitude, position.longitude ]);
+        var currentLayer = L.layerGroup([ currentMarker ]);
+        $scope.map.addLayer( currentLayer );
       });
     };
 
