@@ -12,6 +12,7 @@ module.exports = function(app) { //app === an angular module
     $scope.tour            = [];
     $scope.tours           = [];
     $scope.currentPosition = {};
+    $scope.geoWatch = null;
 
     $scope.geoOptions = {
       enableHighAccuracy: true,
@@ -25,7 +26,6 @@ module.exports = function(app) { //app === an angular module
     }
 
     $scope.loadMap = function() {
-      console.log('derp loadmap');
       $scope.map = L.map('map');
       $scope.attachImagesToMap();
       $scope.getNearby();
@@ -67,7 +67,10 @@ module.exports = function(app) { //app === an angular module
 
     $scope.watchPosition = function( callback ) {
       if ( navigator.geolocation ) {
-        navigator.geolocation.watchPosition(function( position ) {
+        if ( window.watcher ) {
+          navigator.geolocation.clearWatch( window.watcher );
+        }
+        window.watcher = navigator.geolocation.watchPosition(function( position ) {
           if ( typeof callback === 'function' ) {
             callback( position.coords );
           }
@@ -82,7 +85,6 @@ module.exports = function(app) { //app === an angular module
           .success(function( data ) {
             $scope.tours = data;
             console.log("data: " + data );
-            // $scope.tour = data[0].route
             $scope.launchMap();
             // $scope.plotTour();
           })
@@ -108,7 +110,6 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.launchMap = function() {
-      // $scope.attachImagesToMap();
       $scope.watchPosition(function( position ) {
         $scope.map.setView([ position.latitude, position.longitude ], 18 ); // Set view centered on current position
         $scope.updatePosition( position );
