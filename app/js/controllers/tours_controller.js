@@ -13,6 +13,7 @@ module.exports = function(app) { //app === an angular module
     $scope.tours           = [];
     $scope.currentPosition = {};
     $scope.geoWatch = null;
+    $scope.onTour;
 
     $scope.geoOptions = {
       enableHighAccuracy: true,
@@ -173,7 +174,7 @@ module.exports = function(app) { //app === an angular module
     $scope.startTour = function(tour) {
       // console.log("this is tour passed in");
       // console.log(tour.tour);
-      $scope.changeState = false; // to get buttons to leave, most likely there's a better wayfmarker
+      $scope.onTour = true; // to get buttons to leave, most likely there's a better wayfmarker
       $scope.tour = tour.tour.route;
       $scope.watchPosition(function( position) {
         $scope.compareDistance(tour, position);

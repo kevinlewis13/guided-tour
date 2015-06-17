@@ -1,8 +1,7 @@
 <section data-ng-init="loadMap()">
-  <header>
+  <header title="Tours" data-ng-if="!onTour">
     <h2>Tour Guide App</h2>
-    <button data-ng-click="goHome()">Go Home</button>
-    <h1 data-ng-if="changeState">Nearby Tours:</h1>
+    <h1>Nearby Tours:</h1>
     <ul>
       <li data-ng-repeat="tour in tours">
         <h4>{{tour.name}}</h4>
@@ -12,4 +11,6 @@
     </ul>
   </header>
   <section id="map"></section>
+  <button data-ng-click="goHome()">Go Home</button>
+
 </section>
