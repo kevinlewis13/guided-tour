@@ -107,12 +107,19 @@ module.exports = function(grunt) {
       },
       //linting client side
       client: {
-        src: ['app/**/*.js'],
+        src: ['app/**/!(bundle).js'],
         options: {
           globals: {
             angular: true,
             L: true,
-            navigator: true
+            navigator: true,
+            describe: true,
+            it: true,
+            before: true,
+            beforeEach: true,
+            after: true,
+            afterEach: true,
+            expect: true
           }
         }
       },

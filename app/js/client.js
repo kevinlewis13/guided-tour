@@ -29,5 +29,5 @@ toursApp.config(['$routeProvider', function( $routeProvider ) {
     })
     .otherwise({
       redirectTo: '/'
-    })
+    });
 }]);
