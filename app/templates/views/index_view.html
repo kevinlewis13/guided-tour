@@ -1,6 +1,31 @@
 <div data-ng-controller="helloController">
-  <h1>Guided Tours</h1>
-  <button data-ng-click="gotoNearby()">Take Tour</button>
-  <button data-ng-click="gotoMakeTour()">Make Tour</button>
-
+  <link href="http://s3.amazonaws.com/codecademy-content/courses/ltp/css/shift.css" rel="stylesheet">
+  <link rel="stylesheet" href="http://s3.amazonaws.com/codecademy-content/courses/ltp/css/bootstrap.css">
+  <head>
+    <link rel="stylesheet" type="text/css" href="./application.css">
+  </head>
+  <div class="nav">
+    <div class="container">
+      <ul class="pull-left">
+        <li><a>Walking Tales</a></li>
+        <!-- <li><a href="#/about">About</a></li> -->
+      </ul>
+      <ul class="pull-right">
+        <li><a href="#">Sign Up</a></li>
+        <li><a href="#">Log In</a></li>
+<!--         <li><a href="#">Help</a></li>
+ -->  </ul>
+    </div>
+  </div>
+  <div class="jumbotron">
+    <div class="container">
+      <h1>
+        Find a tour.
+      </h1>
+      <p>Welcome to Wandering Tales. Take a tour to walk in the footsteps of somebody else for a day, let them show you.</p>
+      <button class="btn-semi-transparent" data-ng-click="gotoNearby()">Take a Tour</button>
+      <button class="btn-semi-transparent" data-ng-click="gotoMakeTour()">Create a Tour</button>
+    </div>
+  </div>
 </div>
+
