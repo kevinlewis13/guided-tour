@@ -57,7 +57,8 @@ module.exports = function( app ) {
       });
     };
 
-    $scope.addPin = function( position ) {
+    $scope.addPin = function( $event, position ) {
+      $event.preventDefault();
       var newLandmark = {
         position: {
           type: "Point",
@@ -67,7 +68,7 @@ module.exports = function( app ) {
           description: $scope.newLandmark.description
         }
       };
-      // document.getElementById('input-description')
+      $scope.newLandmark.description = '';
       $scope.landmarks.push( newLandmark );
     }
 
