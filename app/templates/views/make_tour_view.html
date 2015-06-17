@@ -1,0 +1,20 @@
+<div data-ng-init="init()">
+  <h1>Create A Tour</h1>
+  <button data-ng-click="goHome()">Home</button>
+  <div id="map" defaults="defaults"></div>
+  <form>
+    <button type="submit" data-ng-click="addPin( currentPosition )">Drop Pin</button>
+    <input id="input-description" type="text" data-ng-model="newLandmark.description">
+  </form>
+  <ol data-ng-if="landmarks">
+    <li data-ng-repeat="landmark in landmarks">
+      <h2>{{ landmark.artifact.description }}</h2>
+    </li>
+  </ol>
+  <form data-ng-submit="postTour( tour )">
+    <input type="text" required data-ng-model="tour.name" placeholder="Tour Name">
+    <input type="text" data-ng-model="tour.creator" placeholder="Tour creator">
+    <input type="text" data-ng-model="tour.description" placeholder="Tour Description">
+    <input type="submit" value="Post Tour">
+  </form>
+</div>

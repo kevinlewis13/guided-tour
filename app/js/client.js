@@ -11,6 +11,7 @@ require('./services/rest_resource.js')(toursApp);
 //controllers
 require('./controllers/hello_controller.js')(toursApp);
 require('./controllers/tours_controller.js')(toursApp);
+require('./controllers/make_tour_controller.js')(toursApp);
 
 //directives
 require('./directives/tour_list_directive.js')(toursApp); //Getting and showing our list of tours
@@ -26,6 +27,10 @@ toursApp.config(['$routeProvider', function( $routeProvider ) {
     .when('/nearby', {
       templateUrl: 'templates/views/take_tour_view.html',
       controller: 'takeTourController'
+    })
+    .when('/create_tour', {
+      templateUrl: 'templates/views/make_tour_view.html',
+      controller: 'makeTourController'
     })
     .otherwise({
       redirectTo: '/'
