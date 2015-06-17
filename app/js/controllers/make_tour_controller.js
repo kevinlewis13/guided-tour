@@ -1,7 +1,8 @@
 'use strict';
 
 module.exports = function( app ) {
-  app.controller('makeTourController', [ '$scope', 'leafletData', function( $scope, leafletData ) {
+  app.controller('makeTourController', [ '$scope', 'leafletData', '$http', function( $scope, leafletData, $http ) {
+    $scope.errors = [];
     $scope.landmarks = [];
     $scope.currentPositionMarker;
 
@@ -41,7 +42,25 @@ module.exports = function( app ) {
           description: $scope.newLandmark.description
         }
       };
+      // document.getElementById('input-description')
       $scope.landmarks.push( newLandmark );
     }
+
+    $scope.postTour = function( tour ) {
+      var newTour = {
+        name: tour.name,
+        creator: tour.creator,
+        description: tour.description,
+        route: $scope.landmarks
+      }
+      $http.post('/api/tours/create_tour', newTour )
+        .success(function( data ) {
+          console.log( data );
+        })
+        .error(function( err ) {
+          $scope.errors.push({ message: 'Could not create tour', error: err })
+        })
+    }
+
   }]);
 }
