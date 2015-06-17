@@ -23,6 +23,12 @@ module.exports = function(app) {
             .error(handleError(callback));
         },
 
+        getNearby: function(position, callback) {
+          $http.get('/api/' + resourceName + '/nearby/' + position.latitude + '/' + position.longitude)
+            .success(handleSuccess(callback))
+            .error(handleError(callback));
+        },
+
         create: function(resourceData, callback) {
           $http.post('/api/' + resourceName, resourceData)
             .success(handleSuccess(callback))
