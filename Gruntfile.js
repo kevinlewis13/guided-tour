@@ -119,7 +119,8 @@ module.exports = function(grunt) {
             beforeEach: true,
             after: true,
             afterEach: true,
-            expect: true
+            expect: true,
+            alert: true
           }
         }
       },

@@ -11,23 +11,22 @@ module.exports = function(app) { //app === an angular module
     $scope.currentWaypoint = 0;
     $scope.tour            = [];
     $scope.tours           = [];
-    $scope.currentPosition = {};
+    $scope.currentPosition = null;
+    $scope.map = null;
 
     $scope.geoOptions = {
       enableHighAccuracy: true,
       maximumAge: 8000
     };
 
-    $scope.map;
-
     $scope.goHome = function() {
       $location.path('/');
-    }
+    };
 
     $scope.loadMap = function() {
       $scope.map = L.map('map');
       $scope.getNearby();
-    }
+    };
 
     $scope.attachImagesToMap = function() {
       L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -77,7 +76,7 @@ module.exports = function(app) { //app === an angular module
 
     $scope.getNearby = function() {
       if(marker) { // to remove markers when going back to select another tour...
-        map.removeLayer(marker);
+        $scope.map.removeLayer(marker);
       }
       $scope.changeState = true; // to get buttons to reappear
       $scope.getPosition(function( position ) {
@@ -126,7 +125,7 @@ module.exports = function(app) { //app === an angular module
       $scope.tour.forEach(function( landmark ) {
         // var lat = landmark.position.coordinates[1];
         // var lng = landmark.position.coordinates[0];
-        $scope.addLandmark( $scope.map, landmark.position.coordinates )
+        $scope.addLandmark( $scope.map, landmark.position.coordinates );
         console.log( landmark.position.coordinates );
       });
     };
@@ -174,7 +173,7 @@ module.exports = function(app) { //app === an angular module
         count++;
       }
       // console.log(count);
-    }
+    };
 
     $scope.startTour = function(tour) {
       // console.log("this is tour passed in");

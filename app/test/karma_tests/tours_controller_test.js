@@ -23,13 +23,13 @@ describe('takeTourController', function() {
     var tourController = $cc('takeTourController', {$scope: $scope});
     expect(typeof tourController).toBe('object');
     expect(Array.isArray($scope.tours));
-    expect(typeof $scope.initializeMap).toBe('function');
+    expect(typeof $scope.loadMap).toBe('function');
     expect(typeof $scope.map).toBe('object');
   });
 
 
   //a separate describe block, to have a different beforeEach and guaranteeing that these are nested
-  /*describe('REST functionality', function() {
+ /* describe('REST functionality', function() {
     beforeEach(angular.mock.inject(function(_$httpBackend_) { //the underscores are for clarity, we could just say $httpBackend
       $httpBackend = _$httpBackend_;
       this.tourController = $cc('takeTourController', {$scope: $scope}); //gives us access to $scope.getAll
