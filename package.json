@@ -30,6 +30,7 @@
   },
   "homepage": "https://github.com/kevinlewis13/guided-tour",
   "dependencies": {
+    "angular-leaflet-directive": "^0.7.15",
     "angular-route": "^1.4.1",
     "body-parser": "^1.12.4",
     "express": "^4.12.4",

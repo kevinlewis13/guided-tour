@@ -1,12 +1,15 @@
-<div data-ng-controller="createTourController">
+<div data-ng-init="centerMap()">
   <h1>Create A Tour</h1>
-  <div id="map"></div>
+  <leaflet id="map" defaults="defaults"></leaflet>
   <div data-ng-if="landmarks">
     <ol data-ng-repeat="landmark in landmarks">
       <li>
-        <h2>{{ landmark.title }}</h2>
+        <h2>{{ landmark }}</h2>
       </li>
     </ol>
   </div>
-  <button data-ng-click="addPin()">Drop Pin</button>
+  <button data-ng-click="addPin( currentPosition )">Drop Pin</button>
+  <form>
+    <input type="text" data-ng-model="newLandmark.description">
+  </form>
 </div>

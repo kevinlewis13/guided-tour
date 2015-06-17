@@ -2,8 +2,9 @@
 
 require('angular/angular');
 require('angular-route');
+require('angular-leaflet-directive');
 
-var toursApp = angular.module('toursApp', [ 'ngRoute' ]);
+var toursApp = angular.module('toursApp', [ 'ngRoute', 'leaflet-directive' ]);
 
 //services
 require('./services/rest_resource.js')(toursApp);
