@@ -40,10 +40,35 @@ describe('takeTourController', function() {
       $httpBackend.verifyNoOutstandingRequest();
     });
 
+    var testTour = {
+      _id: '1',
+      name: 'Test Tour',
+      creator: 'Henry Morgan',
+      description: 'A rudimentary tour for testing',
+      category: 'FUN',
+      rating: '5.0',
+      length: {
+        distance: 2,
+        units: 'km'
+      },
+      route: [
+        {
+          position: {
+            type: { type: 'Point' },
+            coordinates: [567.8, 123.4]
+          },
+          artifact: {
+            description: 'Its eyes follow you.',
+            url: 'http://i.imgur.com/3wNLbwW.jpg'
+          }
+        }
+      ]
+    };
+
     it('should be able to get nearby tours', function() {
+      this.tourController = $cc('takeTourController', {$scope: $scope});
       $scope.testingPosition = {latitude: 123.4, longitude: 567.8};
-      $httpBackend.expectGET('api/tours/nearby/123.4/567.8').respond(200,
-        [{route: 'testData'}, {route: 'moreTestData'}]);
+      $httpBackend.expectGET('api/tours/nearby/123.4/567.8').respond(200, [testTour]);
 
       $scope.getNearby();
       $scope.tours = null;
@@ -58,6 +83,7 @@ describe('takeTourController', function() {
       $scope.getNearby();
       $httpBackend.flush();
       expect($scope.errors.length).toBe(1);
+      expect($scope.errors[0].msg).toBe('test error');
       /*$httpBackend.expectGET('/api/tours').respond(500,
         {msg: 'server error'});
       $scope.getAll();
