@@ -40,7 +40,7 @@ module.exports = function( app ) {
       }
     };
 
-    $scope.centerMap = function() {
+    $scope.trackUser = function() {
       $scope.watchPosition(function( position ) {
         $scope.map.setView([ position.latitude, position.longitude ], 18 );
         $scope.currentPosition = {
@@ -94,7 +94,7 @@ module.exports = function( app ) {
     $scope.init = function() {
       $scope.loadMap();
       $scope.attachImagesToMap();
-      $scope.centerMap();
+      $scope.trackUser();
     }
 
   }]);

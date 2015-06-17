@@ -12,6 +12,7 @@ module.exports = function(app) { //app === an angular module
     $scope.tour            = [];
     $scope.tours           = [];
     $scope.currentPosition = {};
+    $scope.currentPositionMarker;
     $scope.geoWatch = null;
     $scope.onTour;
 
@@ -21,6 +22,24 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.map;
+
+    $scope.trackUser = function(callback) {
+      $scope.watchPosition(function( position ) {
+        $scope.map.setView([ position.latitude, position.longitude ], 18 );
+        $scope.currentPosition = {
+          latitude: position.latitude,
+          longitude: position.longitude
+        }
+        if ( !$scope.currentPositionMarker ) {
+          $scope.currentPositionMarker = L.marker([ position.latitude, position.longitude ]);
+          $scope.currentPositionMarker.addTo( $scope.map );
+          return;
+        } else {
+          $scope.currentPositionMarker.setLatLng([ position.latitude, position.longitude ]);
+        }
+        callback(position);
+      });
+    };
 
     $scope.goHome = function() {
       $location.path('/');
@@ -39,11 +58,11 @@ module.exports = function(app) { //app === an angular module
         }).addTo( $scope.map );
     };
 
-    $scope.addMarker = function( map, position ) {
-      L.marker([ position.latitude, position.longitude ], {
-        title: 'Here!'
-      }).addTo( map );
-    };
+    // $scope.addMarker = function( map, position ) {
+    //   L.marker([ position.latitude, position.longitude ], {
+    //     title: 'Here!'
+    //   }).addTo( map );
+    // };
 
     $scope.addLandmark = function( map, position, options ) {
       L.circle([ position[1], position[0] ], 10, {
@@ -168,25 +187,15 @@ module.exports = function(app) { //app === an angular module
       // console.log(tour.tour);
       $scope.onTour = true; // to get buttons to leave, most likely there's a better wayfmarker
       $scope.tour = tour.tour.route;
-      $scope.watchPosition(function( position) {
-        $scope.compareDistance(tour, position);
 
-        // lngLandmark = $scope.tour[0].position.coordinates[0];
-        // latLandMark = $scope.tour[0].position.coordinates[1];
-        // console.log("THIS IS CURRENT LANDMARK LONG COORDS");
-        // console.log(lngLandmark);
-        // var distance = geolib.getDistance(
-        //   {latitude: latLandMark, longitude: lngLandmark },
-        //   {latitude: position.latitude, longitude: position.longitude}
-        // );
-        // if (distance <= 200) {
-
-        //   alert($scope.tour[0].artifact.description);
-        // }
-        // console.log("THIS IS OUR DISTANCE");
-        // console.log(distance);
-        $scope.addMarker($scope.map, position);
+      $scope.trackUser(function(position) {
+        $scope.compareDistance(tour, position)
       });
+      // $scope.watchPosition(function( position) {
+      //   $scope.compareDistance(tour, position);
+      //
+      //   $scope.addMarker($scope.map, position);
+      // });
       $scope.plotTour();
       // $scope.addMarker($scope.map,  );
 
