@@ -6,7 +6,7 @@ module.exports = function( app ) {
       $location.path('/nearby');
     }
     $scope.gotoMakeTour = function() {
-      $location.path('/make');
+      $location.path('/create_tour');
     }
   }])
 }
