@@ -11,7 +11,7 @@ module.exports = function(app) { //app === an angular module
     $scope.currentTour     = null;
     $scope.currentWaypoint;
     $scope.currentPositionMarker;
-    $scope.onTour;
+    $scope.onTour = false;
     $scope.Tours = true;
     $scope.NearbyTours = true;
     $scope.map;
@@ -35,14 +35,14 @@ module.exports = function(app) { //app === an angular module
 
     $scope.getAll = function() {
       Tour.getAll(function(err, data) {
-        if (err) return $scope.errors.push({msg: 'could not get tours'});
+        if (err) return $scope.errors.push({msg: 'could not get all tours'});
         $scope.tours = data;
       });
     };
 
     $scope.gotoMakeTour = function() {
       $location.path("/create_tour");
-    }
+    };
 
     $scope.loadMap = function() {
       $scope.map = L.map('map');
@@ -95,14 +95,16 @@ module.exports = function(app) { //app === an angular module
         Tour.getNearby(position, function(err, data) {
           if (err) return $scope.errors.push({msg: 'could not get nearby tours'});
           if (data.length < 1) {
-            $scope.Tours = false;
-            $scope.NearbyTours = false;
+            // $scope.Tours = false;
+            // $scope.NearbyTours = false;
+            $location.path('/Could_Not_Find_Tours');
+
           } else {
           $scope.tours = data;
           }
         });
       });
-    }
+    };
 
     $scope.handleGeoError = function( err ) {
       $scope.errors.push({ message: 'Could not get location', error: err });
@@ -115,7 +117,9 @@ module.exports = function(app) { //app === an angular module
       $scope.route = tour.tour.route;
       $scope.trackUser(function(position) {
         console.log("location found");
-        $scope.compareDistance( position )
+      });
+      $scope.watchPosition(function(position) {
+        $scope.compareDistance(tour, position);
       });
       $scope.plotTour();
 
@@ -132,6 +136,7 @@ module.exports = function(app) { //app === an angular module
           $scope.currentPositionMarker = L.marker([ position.latitude, position.longitude ]);
           $scope.currentPositionMarker.addTo( $scope.map );
         } else {
+          console.log($scope.currentPositionMarker);
           $scope.currentPositionMarker.setLatLng([ position.latitude, position.longitude ]);
         }
         callback(position);
@@ -140,8 +145,7 @@ module.exports = function(app) { //app === an angular module
 
     $scope.plotTour = function() {
       $scope.route.forEach(function( landmark ) {
-
-        $scope.addLandmark( $scope.map, landmark.position.coordinates )
+        $scope.addLandmark( $scope.map, landmark.position.coordinates );
       });
     };
 

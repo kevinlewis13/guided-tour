@@ -64,6 +64,10 @@ body {
 .modal-list-hide {
   transform: translate3d(-50%, -110%, 0);
 
+.home-button {
+  position: fixed;
+  bottom: 20px;
+  left: 47%;
 }
 
 .add-landmark-btn {
