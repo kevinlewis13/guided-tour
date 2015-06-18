@@ -90,8 +90,8 @@ module.exports = function(app) { //app === an angular module
       });
       $scope.plotTour();
 
-      if ($scope.currentTour !== tour) {
-        $scope.currentTour = tour;
+      if ($scope.currentTour !== tour.tour) {
+        $scope.currentTour = tour.tour;
         $scope.currentWaypoint = 0;
       }
     };
@@ -137,13 +137,13 @@ module.exports = function(app) { //app === an angular module
       }
     };
 
-    // var latLandMark;
-    // var lngLandmark;
-    // var count = 0;
+    var latLandMark;
+    var lngLandmark;
+    var count = 0;
     $scope.compareDistance = function(tour, position) {
-      var latLandMark;
-      var lngLandmark;
-      var count = 0;
+      // var latLandMark;
+      // var lngLandmark;
+      // var count = 0;
       lngLandmark = $scope.route[count].position.coordinates[0];
       latLandMark = $scope.route[count].position.coordinates[1];
 
@@ -152,7 +152,7 @@ module.exports = function(app) { //app === an angular module
         {latitude: position.latitude, longitude: position.longitude}
       );
 
-      if (distance <= 5) {
+      if (distance <= 50000) {
         alert($scope.route[count].artifact.description);
         alert($scope.currentWaypoint);
         count++;

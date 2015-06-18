@@ -6,12 +6,13 @@
       <li data-ng-repeat="tour in tours">
         <h4>{{tour.name}}</h4>
         <p>Description: {{tour.description}}</p>
+        <p>Route: {{tour.route[0].artifact.description}}</p>
         <button data-ng-click="startTour({tour:tour})">Take This Tour</button>
       </li>
     </ul>
   </header>
   <section id="map"></section>
-  <section id="artifactInfo" data-ng-directive="waypoint-info-directive"></section>
+  <section id="artifactInfo" data-waypoint-info-directive></section>
   <button data-ng-click="goHome()">Go Home</button>
 
 </section>
