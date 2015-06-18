@@ -101,8 +101,9 @@ module.exports = function(app) { //app === an angular module
       $scope.route = tour.tour.route;
       $scope.trackUser(function(position) {
         console.log("location found");
-        $scope.compareDistance(tour, position)
-
+      });
+      $scope.watchPosition(function(position) {
+        $scope.compareDistance(tour, position);
       });
       $scope.plotTour();
 

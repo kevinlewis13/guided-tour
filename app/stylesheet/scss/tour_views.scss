@@ -35,7 +35,7 @@ $formBGcolor: white;
   max-width: 30%;
   padding: 20px;
   border-radius: 3px;
-  transition: all 600ms;
+  transition: all 200ms;
   input {
     display: block;
     float: left;
@@ -50,8 +50,14 @@ $formBGcolor: white;
 }
 
 .modal-list-hide {
-  transform: translate3d(0, -110%, 0);
+  transform: translate3d(0, -1000%, 0);
 
+}
+
+.home-button {
+  position: fixed;
+  bottom: 20px;
+  left: 47%;
 }
 
 .add-landmark-btn {
