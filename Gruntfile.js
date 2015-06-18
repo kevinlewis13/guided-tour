@@ -13,6 +13,9 @@ module.exports = function(grunt) {
   //linting
   grunt.loadNpmTasks('grunt-contrib-jshint');
   //might need to add grunt-concurrent to run nodemon and watch simulatneously in one tab
+  //Testing
+  grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-mocha-test');
 
   grunt.initConfig({
     //main build process
@@ -100,7 +103,7 @@ module.exports = function(grunt) {
       },
       //linting server side tests
       mocha: {
-        src: ['backend/test/server/*test.js'],
+        src: ['backend/test/tours_routes_test.js'],
         options: {
           globals: {
             describe: true,
@@ -114,10 +117,21 @@ module.exports = function(grunt) {
       },
       //linting client side
       client: {
-        src: ['app/**/*.js'],
+        src: ['app/**/!(bundle).js'],
         options: {
           globals: {
-            angular: true
+            angular: true,
+            L: true,
+            navigator: true,
+            describe: true,
+            it: true,
+            before: true,
+            beforeEach: true,
+            after: true,
+            afterEach: true,
+            expect: true,
+            alert: true,
+            window: true
           }
         }
       },
@@ -151,13 +165,34 @@ module.exports = function(grunt) {
     concurrent: {
       nodemonWatch: ['nodemon:dev', 'watch'],
 
+    },
+
+    //Tests
+    karma: {
+      test: {
+        configFile: 'karma.conf.js'
+      }
+    },
+
+    mochaTest: {
+      test: {
+        options: {
+        },
+        src:['backend/test/tours_routes_test.js']
+      }
     }
   });
+
+  grunt.registerTask('test:server', ['jshint:mocha', 'jshint:server',
+                                     'mochaTest']);
+  grunt.registerTask('test:client', ['jshint:client', 'jshint:jasmine',
+                                     'webpack:karma_test', 'karma:test']);
+  grunt.registerTask('test', ['test:server', 'test:client']);
 
   grunt.registerTask('build:dev', ['webpack:client', 'sass', 'copy:html', 'copy:css', 'copy:img']);
   grunt.registerTask('build:test', ['webpack:karma_test']);
   grunt.registerTask('build', ['build:dev', 'build:test']);
+
   grunt.registerTask('linter', ['jshint']);
   grunt.registerTask('serve:dev', [ 'build:dev', 'concurrent:nodemonWatch' ]);
-
 };
