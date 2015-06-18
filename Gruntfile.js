@@ -140,7 +140,7 @@ module.exports = function(grunt) {
       },
       css: {
         files: ['app/**/*.scss'],
-        tasks: ['sass', 'copy:css'],
+        tasks: ['sass', 'autoprefixer:sass'],
       }
     },
     //not sure if/how this works. check with Stefan
