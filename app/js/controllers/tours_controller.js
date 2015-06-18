@@ -16,7 +16,7 @@ module.exports = function(app) { //app === an angular module
     $scope.NearbyTours = true;
     $scope.map;
     $scope.tourListState = 'modal-list-show';
-    $scope.artifactState = 'modal-list-show';
+    $scope.artifactState = 'modal-list-hide';
 
     $scope.geoOptions = {
       enableHighAccuracy: true,
@@ -99,7 +99,7 @@ module.exports = function(app) { //app === an angular module
             $scope.NearbyTours = false;
           } else {
           $scope.tours = data;
-        }
+          }
         });
       });
     }
@@ -115,10 +115,7 @@ module.exports = function(app) { //app === an angular module
       $scope.route = tour.tour.route;
       $scope.trackUser(function(position) {
         console.log("location found");
-        // $scope.compareDistance( $scope.route, position)
-      });
-      $scope.watchPosition(function( position ) {
-        $scope.compareDistance( position );
+        $scope.compareDistance( position )
       });
       $scope.plotTour();
 
@@ -171,7 +168,7 @@ module.exports = function(app) { //app === an angular module
           {latitude: position.latitude, longitude: position.longitude}
         );
 
-        if (distance <= 100) {
+        if (distance <= 500) {
           console.log( distance );
           $scope.artifactState = 'modal-list-show';
           // alert($scope.route[count].artifact.description);
