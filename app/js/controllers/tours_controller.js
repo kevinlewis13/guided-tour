@@ -46,7 +46,8 @@ module.exports = function(app) { //app === an angular module
 
     $scope.loadMap = function() {
       $scope.map = L.map('map', {
-        dragging: true
+        dragging: true,
+        zoomControl: false
       });
       $scope.attachImagesToMap();
       $scope.findUser();
@@ -132,10 +133,13 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.trackUser = function(callback) {
+      var userIcon = L.divIcon({
+        className: 'user-position-icon'
+      });
       $scope.watchPosition(function( position ) {
         $scope.map.setView([ position.latitude, position.longitude ], 18 );
         if ( !$scope.currentPositionMarker ) {
-          $scope.currentPositionMarker = L.marker([ position.latitude, position.longitude ]);
+          $scope.currentPositionMarker = L.marker([ position.latitude, position.longitude ], {icon: userIcon});
           $scope.currentPositionMarker.addTo( $scope.map );
         } else {
           console.log($scope.currentPositionMarker);
