@@ -170,6 +170,7 @@ module.exports = function(grunt) {
       sass: {
         src: 'app/stylesheet/application.css',
         dest: 'build/application.css'
+      }
     },
     //Tests
     karma: {
