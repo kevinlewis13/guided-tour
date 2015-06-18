@@ -1,0 +1,141 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/home/kevin/.node/bin/node',
+1 verbose cli   '/home/kevin/.node/bin/npm',
+1 verbose cli   'install' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.35
+4 verbose readDependencies using package.json deps
+5 verbose install where, deps [ '/home/kevin/Documents/js_accelerator/final_project',
+5 verbose install   [ 'angular',
+5 verbose install     'angular-route',
+5 verbose install     'body-parser',
+5 verbose install     'express',
+5 verbose install     'geolib',
+5 verbose install     'grunt',
+5 verbose install     'grunt-autoprefixer',
+5 verbose install     'grunt-cli',
+5 verbose install     'grunt-concurrent',
+5 verbose install     'grunt-contrib-clean',
+5 verbose install     'grunt-contrib-copy',
+5 verbose install     'grunt-contrib-jshint',
+5 verbose install     'grunt-contrib-watch',
+5 verbose install     'grunt-nodemon',
+5 verbose install     'grunt-sass',
+5 verbose install     'grunt-webpack',
+5 verbose install     'mongoose',
+5 verbose install     'node-libs-browser',
+5 verbose install     'node-sass',
+5 verbose install     'superagent',
+5 verbose install     'webpack',
+5 verbose install     'leaflet',
+5 verbose install     'webpack-dev-server',
+5 verbose install     'angular-mocks',
+5 verbose install     'chai',
+5 verbose install     'chai-http',
+5 verbose install     'jasmine-core',
+5 verbose install     'karma',
+5 verbose install     'karma-jasmine',
+5 verbose install     'karma-phantomjs-launcher',
+5 verbose install     'phantomjs',
+5 verbose install     'grunt-karma',
+5 verbose install     'grunt-mocha-test',
+5 verbose install     'mocha' ] ]
+6 info preinstall final_project@0.1.0
+7 verbose readDependencies using package.json deps
+8 verbose already installed skipping angular@^1.4.0 /home/kevin/Documents/js_accelerator/final_project
+9 verbose already installed skipping angular-route@^1.4.1 /home/kevin/Documents/js_accelerator/final_project
+10 verbose already installed skipping body-parser@^1.12.4 /home/kevin/Documents/js_accelerator/final_project
+11 verbose already installed skipping express@^4.12.4 /home/kevin/Documents/js_accelerator/final_project
+12 verbose already installed skipping geolib@^2.0.17 /home/kevin/Documents/js_accelerator/final_project
+13 verbose already installed skipping grunt@^0.4.5 /home/kevin/Documents/js_accelerator/final_project
+14 verbose already installed skipping grunt-autoprefixer@^3.0.3 /home/kevin/Documents/js_accelerator/final_project
+15 verbose already installed skipping grunt-cli@^0.1.13 /home/kevin/Documents/js_accelerator/final_project
+16 verbose already installed skipping grunt-concurrent@^1.0.1 /home/kevin/Documents/js_accelerator/final_project
+17 verbose already installed skipping grunt-contrib-clean@^0.6.0 /home/kevin/Documents/js_accelerator/final_project
+18 verbose already installed skipping grunt-contrib-copy@^0.8.0 /home/kevin/Documents/js_accelerator/final_project
+19 verbose already installed skipping grunt-contrib-jshint@^0.11.2 /home/kevin/Documents/js_accelerator/final_project
+20 verbose already installed skipping grunt-contrib-watch@^0.6.1 /home/kevin/Documents/js_accelerator/final_project
+21 verbose already installed skipping grunt-nodemon@^0.4.0 /home/kevin/Documents/js_accelerator/final_project
+22 verbose already installed skipping grunt-sass@^1.0.0 /home/kevin/Documents/js_accelerator/final_project
+23 verbose already installed skipping grunt-webpack@^1.0.8 /home/kevin/Documents/js_accelerator/final_project
+24 verbose already installed skipping mongoose@^4.0.5 /home/kevin/Documents/js_accelerator/final_project
+25 verbose already installed skipping node-libs-browser@^0.5.2 /home/kevin/Documents/js_accelerator/final_project
+26 verbose already installed skipping node-sass@^3.2.0 /home/kevin/Documents/js_accelerator/final_project
+27 verbose already installed skipping superagent@^1.2.0 /home/kevin/Documents/js_accelerator/final_project
+28 verbose already installed skipping webpack@^1.9.10 /home/kevin/Documents/js_accelerator/final_project
+29 verbose already installed skipping leaflet@^0.7.3 /home/kevin/Documents/js_accelerator/final_project
+30 verbose already installed skipping webpack-dev-server@^1.9.0 /home/kevin/Documents/js_accelerator/final_project
+31 verbose already installed skipping angular-mocks@^1.4.1 /home/kevin/Documents/js_accelerator/final_project
+32 verbose already installed skipping chai@^3.0.0 /home/kevin/Documents/js_accelerator/final_project
+33 verbose already installed skipping chai-http@^1.0.0 /home/kevin/Documents/js_accelerator/final_project
+34 verbose already installed skipping jasmine-core@^2.3.4 /home/kevin/Documents/js_accelerator/final_project
+35 verbose already installed skipping karma@^0.12.36 /home/kevin/Documents/js_accelerator/final_project
+36 verbose already installed skipping karma-jasmine@^0.3.5 /home/kevin/Documents/js_accelerator/final_project
+37 verbose already installed skipping karma-phantomjs-launcher@^0.2.0 /home/kevin/Documents/js_accelerator/final_project
+38 verbose already installed skipping phantomjs@^1.9.17 /home/kevin/Documents/js_accelerator/final_project
+39 verbose already installed skipping grunt-karma@^0.11.0 /home/kevin/Documents/js_accelerator/final_project
+40 verbose already installed skipping grunt-mocha-test@^0.12.7 /home/kevin/Documents/js_accelerator/final_project
+41 verbose already installed skipping mocha@^2.2.5 /home/kevin/Documents/js_accelerator/final_project
+42 silly resolved []
+43 info build /home/kevin/Documents/js_accelerator/final_project
+44 verbose linkStuff [ false, false, false, '/home/kevin/Documents/js_accelerator' ]
+45 info linkStuff final_project@0.1.0
+46 verbose linkBins final_project@0.1.0
+47 verbose linkMans final_project@0.1.0
+48 verbose rebuildBundles final_project@0.1.0
+49 verbose rebuildBundles [ '.bin',
+49 verbose rebuildBundles   'angular',
+49 verbose rebuildBundles   'angular-mocks',
+49 verbose rebuildBundles   'angular-route',
+49 verbose rebuildBundles   'body-parser',
+49 verbose rebuildBundles   'chai',
+49 verbose rebuildBundles   'chai-http',
+49 verbose rebuildBundles   'express',
+49 verbose rebuildBundles   'geolib',
+49 verbose rebuildBundles   'grunt',
+49 verbose rebuildBundles   'grunt-autoprefixer',
+49 verbose rebuildBundles   'grunt-cli',
+49 verbose rebuildBundles   'grunt-concurrent',
+49 verbose rebuildBundles   'grunt-contrib-clean',
+49 verbose rebuildBundles   'grunt-contrib-copy',
+49 verbose rebuildBundles   'grunt-contrib-jshint',
+49 verbose rebuildBundles   'grunt-contrib-watch',
+49 verbose rebuildBundles   'grunt-karma',
+49 verbose rebuildBundles   'grunt-mocha-test',
+49 verbose rebuildBundles   'grunt-nodemon',
+49 verbose rebuildBundles   'grunt-sass',
+49 verbose rebuildBundles   'grunt-webpack',
+49 verbose rebuildBundles   'jasmine-core',
+49 verbose rebuildBundles   'karma',
+49 verbose rebuildBundles   'karma-jasmine',
+49 verbose rebuildBundles   'karma-phantomjs-launcher',
+49 verbose rebuildBundles   'leaflet',
+49 verbose rebuildBundles   'mocha',
+49 verbose rebuildBundles   'mongoose',
+49 verbose rebuildBundles   'node-libs-browser',
+49 verbose rebuildBundles   'node-sass',
+49 verbose rebuildBundles   'phantomjs',
+49 verbose rebuildBundles   'superagent',
+49 verbose rebuildBundles   'webpack',
+49 verbose rebuildBundles   'webpack-dev-server' ]
+50 info install final_project@0.1.0
+51 info postinstall final_project@0.1.0
+52 verbose unsafe-perm in lifecycle true
+53 info final_project@0.1.0 Failed to exec postinstall script
+54 error final_project@0.1.0 postinstall: `grunt build`
+54 error Exit status 6
+55 error Failed at the final_project@0.1.0 postinstall script.
+55 error This is most likely a problem with the final_project package,
+55 error not with npm itself.
+55 error Tell the author that this fails on your system:
+55 error     grunt build
+55 error You can get their info via:
+55 error     npm owner ls final_project
+55 error There is likely additional logging output above.
+56 error System Linux 3.13.0-55-generic
+57 error command "/home/kevin/.node/bin/node" "/home/kevin/.node/bin/npm" "install"
+58 error cwd /home/kevin/Documents/js_accelerator/final_project
+59 error node -v v0.10.35
+60 error npm -v 1.4.28
+61 error code ELIFECYCLE
+62 verbose exit [ 1, true ]
