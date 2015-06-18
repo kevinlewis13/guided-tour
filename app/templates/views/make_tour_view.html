@@ -5,7 +5,7 @@
   </header>
   <div id="map" defaults="defaults"></div>
   <form>
-    <button type="submit" data-ng-click="addPin( currentPosition )">Drop Pin</button>
+    <button type="submit" data-ng-click="addPin( $event, currentPosition )">Drop Pin</button>
     <input id="input-description" type="text" data-ng-model="newLandmark.description">
   </form>
   <ol data-ng-if="landmarks">

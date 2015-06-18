@@ -41,6 +41,9 @@ module.exports = function( app ) {
     };
 
     $scope.trackUser = function() {
+      var userIcon = L.divIcon({
+        className: 'user-position-icon'
+      });
       $scope.watchPosition(function( position ) {
         $scope.map.setView([ position.latitude, position.longitude ], 18 );
         $scope.currentPosition = {
@@ -48,7 +51,7 @@ module.exports = function( app ) {
           longitude: position.longitude
         };
         if ( !$scope.currentPositionMarker ) {
-          $scope.currentPositionMarker = L.marker([ position.latitude, position.longitude ]);
+          $scope.currentPositionMarker = L.marker([ position.latitude, position.longitude ], {icon: userIcon});
           $scope.currentPositionMarker.addTo( $scope.map );
           return;
         } else {
@@ -57,7 +60,8 @@ module.exports = function( app ) {
       });
     };
 
-    $scope.addPin = function( position ) {
+    $scope.addPin = function( $event, position ) {
+      $event.preventDefault();
       var newLandmark = {
         position: {
           type: "Point",
@@ -67,7 +71,7 @@ module.exports = function( app ) {
           description: $scope.newLandmark.description
         }
       };
-      // document.getElementById('input-description')
+      $scope.newLandmark.description = '';
       $scope.landmarks.push( newLandmark );
     };
 
