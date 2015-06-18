@@ -1,6 +1,7 @@
 'use strict';
 
-var server = require('../../server.js'); //run our server
+process.env.TOURSTEST_URI = 'mongodb://localhost/tours_test';
+require('../../server.js');
 
 var chai = require('chai');
 var chaiHttp = require('chai-http');
