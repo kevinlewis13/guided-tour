@@ -1,0 +1,37 @@
+$formBGcolor: white;
+
+#map {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -100;
+}
+
+.tour-form {
+  background: $formBGcolor;
+  input {
+    display: block;
+    float: left;
+    width: 10em;
+    clear: both;
+    margin: 10px;
+    min-height: 20px;
+    &:before, &:after {
+      content: '';
+      display: table;
+    }
+    &:after {
+      clear: both;
+    }
+  }
+}
+
+.form-hidden {
+
+}
+
+.form-showing {
+
+}
