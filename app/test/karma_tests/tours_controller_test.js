@@ -104,12 +104,16 @@ describe('takeTourController', function() {
       expect($scope.errors[0].msg).toBe('could not get nearby tours');
       expect($scope.errors[1].msg).toBe('could not get all tours');
 
+
+      $httpBackend.expectGET('/api/tours').respond(200, [testTour, testTour2]);
       $scope.clearErrors();
+      $httpBackend.flush();
       expect($scope.errors.length).toBe(0);
+      expect($scope.tours.length).toBe(2);
     });
 
     it('should correctly update the user\'s position', function() {
-      var testPos = {
+      /*var testPos = {
         latitude: 3.14159,
         longitude: 2.65358
       };
@@ -118,7 +122,7 @@ describe('takeTourController', function() {
       testPos.longitude -=1.2345;
       $scope.updatePosition(testPos);
       expect($scope.currentPosition.latitude).toBe(testPos.latitude);
-      expect($scope.currentPosition.longitude).toBe(testPos.longitude);
+      expect($scope.currentPosition.longitude).toBe(testPos.longitude);*/
     });
 
     it('should correctly start the user on a tour', function() {

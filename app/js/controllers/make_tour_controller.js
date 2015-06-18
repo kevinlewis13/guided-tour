@@ -16,7 +16,7 @@ module.exports = function( app ) {
       } else {
         $scope.formState = "form-hidden";
       }
-    }
+    };
 
     $scope.loadMap = function() {
       $scope.map = L.map('map');
