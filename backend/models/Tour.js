@@ -19,7 +19,7 @@ var tourSchema = new mongoose.Schema({
         coordinates: [Number]
       },
       artifact: {
-        naem: String,
+        name: String,
         description: String,
         url: String
       }
