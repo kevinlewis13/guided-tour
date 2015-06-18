@@ -12,6 +12,8 @@ module.exports = function(app) { //app === an angular module
     $scope.currentWaypoint = 0;
     $scope.currentPositionMarker;
     $scope.onTour;
+    $scope.Tours = true;
+    $scope.NearbyTours = true;
     $scope.map;
 
     $scope.geoOptions = {
@@ -36,6 +38,10 @@ module.exports = function(app) { //app === an angular module
       });
     };
 
+    $scope.gotoMakeTour = function() {
+      $location.path("/create_tour");
+    }
+
     $scope.loadMap = function() {
       $scope.map = L.map('map');
       $scope.attachImagesToMap();
@@ -55,16 +61,6 @@ module.exports = function(app) { //app === an angular module
       });
     };
 
-    $scope.getNearby = function() {
-      $scope.getPosition(function( position ) {
-        //console.log('derp position: ' + position);
-        Tour.getNearby(position, function(err, data) {
-          if (err) return $scope.errors.push({msg: 'could not get nearby tours'});
-          $scope.tours = data;
-        });
-      });
-    };
-
     $scope.getPosition = function( callback ) {
       if ( navigator.geolocation ) {
         navigator.geolocation.getCurrentPosition(function( position ) {
@@ -76,6 +72,34 @@ module.exports = function(app) { //app === an angular module
         callback($scope.testingPosition); // this is for tests
       }
     };
+
+    $scope.watchPosition = function( callback ) {
+      if ( navigator.geolocation ) {
+        if ( window.watcher ) {
+          navigator.geolocation.clearWatch( window.watcher );
+        }
+        window.watcher = navigator.geolocation.watchPosition(function( position ) {
+          if ( typeof callback === 'function' ) {
+            callback( position.coords );
+          }
+        }, $scope.handleGeoError, $scope.geoOptions );
+      }
+    };
+
+    $scope.getNearby = function() {
+      $scope.getPosition(function( position ) {
+        //console.log('derp position: ' + position);
+        Tour.getNearby(position, function(err, data) {
+          if (err) return $scope.errors.push({msg: 'could not get nearby tours'});
+          if (data.length < 1) {
+            $scope.Tours = false;
+            $scope.NearbyTours = false;
+          } else {
+          $scope.tours = data;
+        }
+        });
+      });
+    }
 
     $scope.handleGeoError = function( err ) {
       $scope.errors.push({ message: 'Could not get location', error: err });
@@ -124,26 +148,10 @@ module.exports = function(app) { //app === an angular module
       }).addTo( map );
     };
 
-    $scope.watchPosition = function( callback ) {
-      if ( navigator.geolocation ) {
-        if ( window.watcher ) {
-          navigator.geolocation.clearWatch( window.watcher );
-        }
-        window.watcher = navigator.geolocation.watchPosition(function( position ) {
-          if ( typeof callback === 'function' ) {
-            callback( position.coords );
-          }
-        }, $scope.handleGeoError, $scope.geoOptions );
-      }
-    };
-
-    // var latLandMark;
-    // var lngLandmark;
-    // var count = 0;
+    var count = 0;
     $scope.compareDistance = function(tour, position) {
       var latLandMark;
       var lngLandmark;
-      var count = 0;
       lngLandmark = $scope.route[count].position.coordinates[0];
       latLandMark = $scope.route[count].position.coordinates[1];
 
