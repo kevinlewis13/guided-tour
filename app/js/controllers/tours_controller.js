@@ -45,7 +45,9 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.loadMap = function() {
-      $scope.map = L.map('map');
+      $scope.map = L.map('map', {
+        dragging: true
+      });
       $scope.attachImagesToMap();
       $scope.findUser();
       $scope.getNearby();
