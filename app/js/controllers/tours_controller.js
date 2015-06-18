@@ -172,7 +172,7 @@ module.exports = function(app) { //app === an angular module
           {latitude: position.latitude, longitude: position.longitude}
         );
 
-        if (distance <= 500) {
+        if (distance <= 100) {
           console.log( distance );
           $scope.artifactState = 'modal-list-show';
           // alert($scope.route[count].artifact.description);
