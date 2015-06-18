@@ -9,7 +9,7 @@ module.exports = function(app) { //app === an angular module
     $scope.route           = [];
     $scope.tours           = [];
     $scope.currentTour     = null;
-    $scope.currentWaypoint = 0;
+    $scope.currentWaypoint;
     $scope.currentPositionMarker;
     $scope.onTour = false;
     $scope.Tours = true;
@@ -75,6 +75,20 @@ module.exports = function(app) { //app === an angular module
       }
     };
 
+    $scope.watchPosition = function( callback ) {
+      if ( navigator.geolocation ) {
+        if ( window.watcher ) {
+          console.log( 'watcher id: ' + window.watcher );
+          // navigator.geolocation.clearWatch( window.watcher );
+        }
+        window.watcher = navigator.geolocation.watchPosition(function( position ) {
+          if ( typeof callback === 'function' ) {
+            callback( position.coords );
+          }
+        }, $scope.handleGeoError, $scope.geoOptions );
+      }
+    };
+
     $scope.getNearby = function() {
       $scope.getPosition(function( position ) {
         //console.log('derp position: ' + position);
@@ -87,7 +101,7 @@ module.exports = function(app) { //app === an angular module
 
           } else {
           $scope.tours = data;
-        }
+          }
         });
       });
     };
@@ -141,49 +155,36 @@ module.exports = function(app) { //app === an angular module
         fill: '#fca'
       }).addTo( map );
     };
-
-    $scope.watchPosition = function( callback ) {
-      if ( navigator.geolocation ) {
-        if ( window.watcher ) {
-          navigator.geolocation.clearWatch( window.watcher );
-        }
-        window.watcher = navigator.geolocation.watchPosition(function( position ) {
-          if ( typeof callback === 'function' ) {
-            callback( position.coords );
-          }
-        }, $scope.handleGeoError, $scope.geoOptions );
-      }
-    };
-
     // var latLandMark;
     // var lngLandmark;
-    var count = 0;
-    $scope.compareDistance = function(tour, position) {
+    // var count = 0;
+    $scope.compareDistance = function( position ) {
       var latLandMark;
       var lngLandmark;
       // var count = 0;
-      if (count < $scope.route.length){
-      lngLandmark = $scope.route[count].position.coordinates[0];
-      latLandMark = $scope.route[count].position.coordinates[1];
+      $scope.currentWaypoint = $scope.currentWaypoint++ || 0;
+      if ($scope.currentWaypoint < $scope.route.length) {
+        lngLandmark = $scope.route[$scope.currentWaypoint].position.coordinates[0];
+        latLandMark = $scope.route[$scope.currentWaypoint].position.coordinates[1];
 
-      var distance = geolib.getDistance(
-        {latitude: latLandMark, longitude: lngLandmark },
-        {latitude: position.latitude, longitude: position.longitude}
-      );
-      console.log(distance);
+        var distance = geolib.getDistance(
+          {latitude: latLandMark, longitude: lngLandmark },
+          {latitude: position.latitude, longitude: position.longitude}
+        );
 
-      if (distance <= 50000) {
-        console.log('inside if, count');
-        console.log(count);
-        alert($scope.route[count].artifact.description);
-        alert($scope.currentWaypoint);
-        $scope.currentWaypoint++;
-        count++;
-        console.log(count);
+        if (distance <= 100) {
+          console.log( distance );
+          $scope.artifactState = 'modal-list-show';
+          // alert($scope.route[count].artifact.description);
+          console.log( 'currentWaypoint: ' + $scope.currentWaypoint );
+          return $scope.currentWaypoint++;
+          // count++;
+        } else {
+          $scope.artifactState = 'modal-list-hide';
+        }
+      } else {
+        // alert("tour all done!")
       }
-    } else {
-      alert("tour all done!")
-    }
     };
 
     $scope.nextWaypoint = function() {
