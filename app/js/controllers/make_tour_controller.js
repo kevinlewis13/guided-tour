@@ -19,7 +19,10 @@ module.exports = function( app ) {
     };
 
     $scope.loadMap = function() {
-      $scope.map = L.map('map');
+      $scope.map = L.map('map', {
+        dragging: true,
+        zoomControl: false
+      });
     };
 
     $scope.geoOptions = {
