@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 var mongoose = require('mongoose');
 var express = require('express');
@@ -7,7 +7,7 @@ var app = express();
 
 var toursRouter = express.Router();
 
-mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/tours_development');
+mongoose.connect(process.env.MONGOLAB_URI || process.env.TOURSTEST_URI || 'mongodb://localhost/tours_development');
 
 app.use(express.static(__dirname + '/build'));
 

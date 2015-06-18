@@ -6,7 +6,7 @@ module.exports = function(app) { //app === an angular module
   app.controller('takeTourController', ['$scope', 'RESTResource', '$location', function($scope, restResource, $location) {
     var Tour = restResource('tours');
     $scope.errors          = [];
-    $scope.route            = [];
+    $scope.route           = [];
     $scope.tours           = [];
     $scope.currentTour     = null;
     $scope.currentWaypoint = 0;
@@ -72,6 +72,8 @@ module.exports = function(app) { //app === an angular module
             callback( position.coords );
           }
         }, $scope.handleGeoError, $scope.geoOptions );
+      } else if ($scope.testingPosition) { //this is for tests
+        callback($scope.testingPosition); // this is for tests
       }
     };
 
