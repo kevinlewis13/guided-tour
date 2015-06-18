@@ -1,7 +1,7 @@
 <div>
 <h1>{{tour.waypoints[currentWaypoint].name}} Info:</h1>
 
-<button data-ng-click="changeState({state: 'navigation'})">Return To Navigation</button>
+<!-- <button data-ng-click="changeState({state: 'navigation'})">Return To Navigation</button> -->
 
 <button data-ng-if="currentWaypoint < tour.waypoints.length - 1"
         data-ng-click="nextWaypoint(); changeState({state: 'navigation'})">Navigate To Next Waypoint</button>
