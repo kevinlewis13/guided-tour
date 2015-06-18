@@ -101,6 +101,7 @@ module.exports = function( app ) {
         .error(function( err ) {
           $scope.errors.push({ message: 'Could not create tour', error: err });
         });
+        $scope.toggleNav();
     };
 
     $scope.goHome = function() {
