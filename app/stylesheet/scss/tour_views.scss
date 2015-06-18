@@ -1,0 +1,102 @@
+$formBGcolor: white;
+
+body {
+  overflow: hidden;
+}
+
+#map {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -100;
+}
+
+.tour-form {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: $formBGcolor;
+  overflow: auto;
+  max-width: 16em;
+  padding: 20px;
+  border-radius: 3px;
+  transition: all 600ms;
+  input {
+    display: block;
+    float: left;
+    width: 90%;
+    clear: left;
+    margin: 10px;
+  }
+}
+
+.add-landmark-btn {
+  position: absolute;
+  top: 85%;
+  left: 20px;
+  background-color: lightgreen;
+  font-size: 2em;
+  width: 70px;
+  height: 70px;
+  border-radius: 35px;
+  box-shadow: 5px 5px 10px rgba(0,0,0,0.4);
+  padding: 5px;
+  color: white;
+  transform: translate3D(50%, 0, 0);
+}
+
+.tour-nav-button {
+  position: absolute;
+  top: 90%;
+  right: 20px;
+  width: 80px;
+  height: 50px;
+  background-color: coral;
+  color: white;
+  font-weight: 800;
+  border-radius: 25px;
+}
+.form-hidden {
+  transform: translate3D(100%, 0, 0);
+}
+.form-showing {
+  transform: translate3D(0, 0, 0);
+}
+
+#landmark-form {
+  position: absolute;
+  bottom: -50%;
+  left: 50%;
+  height: 50%;
+  transition: all 600ms;
+  input[type='text'] {
+    font-size: 2em;
+    min-width: 80%;
+    max-width: 100%;
+  }
+  button {
+    background: coral;
+    font-size: 2em;
+    border-radius: 10px;
+    color: white;
+  }
+}
+
+.landmark-form-showing {
+  transform: translate3d(-50%, -100%, 0);
+}
+.landmark-form-hidden {
+  transform: translate3d(-50%, 0, 0);
+}
+
+.create-finale {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  background: white;
+  overflow: auto;
+  border-radius: 3px;
+}

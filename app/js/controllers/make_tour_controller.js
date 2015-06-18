@@ -4,12 +4,23 @@ module.exports = function( app ) {
   app.controller('makeTourController', [ '$scope', '$http', '$location', function( $scope, $http, $location ) {
     $scope.errors = [];
     $scope.landmarks = [];
-    $scope.currentPositionMarker;
-    $scope.map;
+    $scope.currentPositionMarker = null;
+    $scope.map = null;
+
+    $scope.landmarkFormState = 'landmark-form-hidden';
+    $scope.formState = 'form-hidden';
+
+    $scope.toggleNav = function() {
+      if ($scope.formState === "form-hidden") {
+        $scope.formState = "form-showing";
+      } else {
+        $scope.formState = "form-hidden";
+      }
+    }
 
     $scope.loadMap = function() {
       $scope.map = L.map('map');
-    }
+    };
 
     $scope.geoOptions = {
       enableHighAccuracy: true,
@@ -40,15 +51,18 @@ module.exports = function( app ) {
       }
     };
 
-    $scope.centerMap = function() {
+    $scope.trackUser = function() {
+      var userIcon = L.divIcon({
+        className: 'user-position-icon'
+      });
       $scope.watchPosition(function( position ) {
         $scope.map.setView([ position.latitude, position.longitude ], 18 );
         $scope.currentPosition = {
           latitude: position.latitude,
           longitude: position.longitude
-        }
+        };
         if ( !$scope.currentPositionMarker ) {
-          $scope.currentPositionMarker = L.marker([ position.latitude, position.longitude ]);
+          $scope.currentPositionMarker = L.marker([ position.latitude, position.longitude ], {icon: userIcon});
           $scope.currentPositionMarker.addTo( $scope.map );
           return;
         } else {
@@ -58,6 +72,7 @@ module.exports = function( app ) {
     };
 
     $scope.addPin = function( position ) {
+      console.log( position );
       var newLandmark = {
         position: {
           type: "Point",
@@ -67,9 +82,10 @@ module.exports = function( app ) {
           description: $scope.newLandmark.description
         }
       };
-      // document.getElementById('input-description')
+      $scope.newLandmark.description = '';
       $scope.landmarks.push( newLandmark );
-    }
+      $scope.landmarkFormState = 'landmark-form-hidden';
+    };
 
     $scope.postTour = function( tour ) {
       var newTour = {
@@ -77,25 +93,26 @@ module.exports = function( app ) {
         creator: tour.creator,
         description: tour.description,
         route: $scope.landmarks
-      }
+      };
       $http.post('/api/tours/create_tour', newTour )
         .success(function( data ) {
           console.log( data );
         })
         .error(function( err ) {
-          $scope.errors.push({ message: 'Could not create tour', error: err })
-        })
-    }
+          $scope.errors.push({ message: 'Could not create tour', error: err });
+        });
+        $scope.toggleNav();
+        $scope.landmarkListState = 'create-finale';
+    };
 
     $scope.goHome = function() {
       $location.path('/');
-    }
+    };
 
     $scope.init = function() {
       $scope.loadMap();
       $scope.attachImagesToMap();
-      $scope.centerMap();
-    }
-
+      $scope.trackUser();
+    };
   }]);
-}
+};
