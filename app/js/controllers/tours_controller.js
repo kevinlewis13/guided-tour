@@ -14,7 +14,9 @@ module.exports = function(app) { //app === an angular module
     $scope.onTour = false;
     $scope.Tours = true;
     $scope.NearbyTours = true;
-    $scope.map = {};
+    $scope.map;
+    $scope.tourListState = 'modal-list-show';
+    $scope.artifactState = 'modal-list-hide';
 
     $scope.geoOptions = {
       enableHighAccuracy: true,
@@ -73,19 +75,6 @@ module.exports = function(app) { //app === an angular module
       }
     };
 
-    $scope.watchPosition = function( callback ) {
-      if ( navigator.geolocation ) {
-        if ( window.watcher ) {
-          navigator.geolocation.clearWatch( window.watcher );
-        }
-        window.watcher = navigator.geolocation.watchPosition(function( position ) {
-          if ( typeof callback === 'function' ) {
-            callback( position.coords );
-          }
-        }, $scope.handleGeoError, $scope.geoOptions );
-      }
-    };
-
     $scope.getNearby = function() {
       $scope.getPosition(function( position ) {
         //console.log('derp position: ' + position);
@@ -109,16 +98,20 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.startTour = function(tour) {
+      $scope.tourListState = 'modal-list-hide';
       $scope.onTour = true; // to get buttons to leave, most likely there's a better way
       $scope.route = tour.tour.route;
       $scope.trackUser(function(position) {
+        console.log("location found");
+      });
+      $scope.watchPosition(function(position) {
         $scope.compareDistance(tour, position);
       });
       $scope.plotTour();
 
-      if ($scope.currentTour !== tour) {
-        $scope.currentTour = tour;
-        $scope.currentWaypoint = 0;
+      if ($scope.currentTour !== tour.tour) {
+        $scope.currentTour = tour.tour;
+        // $scope.currentWaypoint = 0;
       }
     };
 
@@ -149,10 +142,27 @@ module.exports = function(app) { //app === an angular module
       }).addTo( map );
     };
 
+    $scope.watchPosition = function( callback ) {
+      if ( navigator.geolocation ) {
+        if ( window.watcher ) {
+          navigator.geolocation.clearWatch( window.watcher );
+        }
+        window.watcher = navigator.geolocation.watchPosition(function( position ) {
+          if ( typeof callback === 'function' ) {
+            callback( position.coords );
+          }
+        }, $scope.handleGeoError, $scope.geoOptions );
+      }
+    };
+
+    // var latLandMark;
+    // var lngLandmark;
     var count = 0;
     $scope.compareDistance = function(tour, position) {
       var latLandMark;
       var lngLandmark;
+      // var count = 0;
+      if (count < $scope.route.length){
       lngLandmark = $scope.route[count].position.coordinates[0];
       latLandMark = $scope.route[count].position.coordinates[1];
 
@@ -160,12 +170,20 @@ module.exports = function(app) { //app === an angular module
         {latitude: latLandMark, longitude: lngLandmark },
         {latitude: position.latitude, longitude: position.longitude}
       );
+      console.log(distance);
 
-      if (distance <= 5) {
+      if (distance <= 50000) {
+        console.log('inside if, count');
+        console.log(count);
         alert($scope.route[count].artifact.description);
         alert($scope.currentWaypoint);
+        $scope.currentWaypoint++;
         count++;
+        console.log(count);
       }
+    } else {
+      alert("tour all done!")
+    }
     };
 
     $scope.nextWaypoint = function() {
