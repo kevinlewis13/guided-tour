@@ -28,6 +28,32 @@ $formBGcolor: white;
   }
 }
 
+.modal-list {
+  margin: 2em auto;
+  background: $formBGcolor;
+  overflow: auto;
+  max-width: 30%;
+  padding: 20px;
+  border-radius: 3px;
+  transition: all 600ms;
+  input {
+    display: block;
+    float: left;
+    width: 90%;
+    clear: left;
+    margin: 10px;
+  }
+}
+
+.modal-list-show {
+  transform: translate3d(0, 0, 0);
+}
+
+.modal-list-hide {
+  transform: translate3d(0, -110%, 0);
+
+}
+
 .add-landmark-btn {
   position: absolute;
   bottom: 20px;

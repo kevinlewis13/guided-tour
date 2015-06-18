@@ -15,6 +15,8 @@ module.exports = function(app) { //app === an angular module
     $scope.Tours = true;
     $scope.NearbyTours = true;
     $scope.map;
+    $scope.tourListState = 'modal-list-show';
+    $scope.artifactState = 'modal-list-hide';
 
     $scope.geoOptions = {
       enableHighAccuracy: true,
@@ -94,10 +96,13 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.startTour = function(tour) {
+      $scope.tourListState = 'modal-list-hide';
       $scope.onTour = true; // to get buttons to leave, most likely there's a better way
       $scope.route = tour.tour.route;
       $scope.trackUser(function(position) {
+        console.log("location found");
         $scope.compareDistance(tour, position)
+
       });
       $scope.plotTour();
 
@@ -163,6 +168,7 @@ module.exports = function(app) { //app === an angular module
         {latitude: latLandMark, longitude: lngLandmark },
         {latitude: position.latitude, longitude: position.longitude}
       );
+      console.log(distance);
 
       if (distance <= 50000) {
         console.log('inside if, count');
