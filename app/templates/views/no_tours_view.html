@@ -1,0 +1,11 @@
+ <div>
+      <p>Unfortunately there are not any tours within 100 miles of you, how about you make one?</p>
+      <button data-ng-click="gotoMakeTour()">Create a Tour</button>
+      <p>If you want to browse all tours click the button</p>
+      <button data-ng-click="getAll()">All tours</button>
+         <li data-ng-repeat="tour in tours">
+        <h4>{{tour.name}}</h4>
+        <p>Description: {{tour.description}}</p>
+        <!-- <button data-ng-click="startTour({tour: tour})">Take This Tour</button> -->
+      </li>
+  </div>

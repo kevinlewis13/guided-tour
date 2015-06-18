@@ -92,8 +92,10 @@ module.exports = function(app) { //app === an angular module
         Tour.getNearby(position, function(err, data) {
           if (err) return $scope.errors.push({msg: 'could not get nearby tours'});
           if (data.length < 1) {
-            $scope.Tours = false;
-            $scope.NearbyTours = false;
+            // $scope.Tours = false;
+            // $scope.NearbyTours = false;
+            $location.path('/Could_Not_Find_Tours');
+
           } else {
           $scope.tours = data;
         }

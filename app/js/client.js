@@ -28,6 +28,10 @@ toursApp.config(['$routeProvider', function( $routeProvider ) {
       templateUrl: 'templates/views/take_tour_view.html',
       controller: 'takeTourController'
     })
+    .when('/Could_Not_Find_Tours', {
+      templateUrl: 'templates/views/no_tours_view.html',
+      controller: 'takeTourController'
+    })
     .when('/create_tour', {
       templateUrl: 'templates/views/make_tour_view.html',
       controller: 'makeTourController'
