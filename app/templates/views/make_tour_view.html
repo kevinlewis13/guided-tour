@@ -1,14 +1,17 @@
 <section data-ng-init="init()">
   <nav>
-    <button data-ng-click="formState='form-hidden'" class="tour-nav-button">Add Tour Data</button>
+    <button data-ng-click="toggleNav()" class="tour-nav-button">Add Tour Data</button>
   </nav>
   <header>
     <h1>Create A Tour</h1>
     <button data-ng-click="goHome()">Home</button>
   </header>
   <form>
-    <button type="submit" data-ng-click="addPin( $event, currentPosition )">Drop Pin</button>
-    <input id="input-description" type="text" data-ng-model="newLandmark.description">
+    <button class="add-landmark-btn" type="submit" data-ng-click="landmarkFormState='landmark-form-showing'">Add Landmark</button>
+  </form>
+  <form id="landmark-form" data-ng-class="landmarkFormState">
+    <input id="input-description" type="text" required data-ng-model="newLandmark.description">
+    <button type="submit" data-ng-click="addPin( $event, currentPosition )">Add</button>
   </form>
   <ol data-ng-if="landmarks">
     <li data-ng-repeat="landmark in landmarks">
@@ -16,10 +19,10 @@
     </li>
   </ol>
   <form data-ng-class="formState" class="tour-form form-group" data-ng-submit="postTour( tour )">
-    <input class="" type="text" required data-ng-model="tour.name" placeholder="Tour Name">
-    <input class="" type="text" data-ng-model="tour.creator" placeholder="Tour creator">
-    <input class="" type="text" data-ng-model="tour.description" placeholder="Tour Description">
-    <input class="" type="submit" value="Post Tour">
+    <input class="" type="text" required data-ng-model="tour.name" placeholder="Tour Name" />
+    <input class="" type="text" data-ng-model="tour.creator" placeholder="Tour creator" />
+    <input class="" type="text" data-ng-model="tour.description" placeholder="Tour Description" />
+    <input class="" type="submit" value="Post Tour" />
   </form>
-  <div id="map" defaults="defaults"></div>
+  <div id="map"></div>
 </section>

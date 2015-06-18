@@ -28,6 +28,17 @@ $formBGcolor: white;
   }
 }
 
+.add-landmark-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 50%;
+  background-color: blue;
+  font-size: 2em;
+  border-radius: 10px;
+  padding: 5px;
+  color: white;
+  transform: translate3D(50%, 0, 0);
+}
 
 .tour-nav-button {
   position: absolute;
@@ -38,10 +49,33 @@ $formBGcolor: white;
 }
 .form-hidden {
   transform: translate3D(100%, 0, 0);
-
+}
+.form-showing {
+  transform: translate3D(0, 0, 0);
 }
 
-.form-showing {
-    transform: translate3D(0, 0, 0);
+#landmark-form {
+  position: absolute;
+  bottom: -50%;
+  left: 50%;
+  height: 50%;
+  transition: all 600ms;
+  input[type='text'] {
+    font-size: 2em;
+    min-width: 80%;
+    max-width: 100%;
+  }
+  button {
+    background: coral;
+    font-size: 2em;
+    border-radius: 10px;
+    color: white;
+  }
+}
 
+.landmark-form-showing {
+  transform: translate3d(-50%, -100%, 0);
+}
+.landmark-form-hidden {
+  transform: translate3d(-50%, 0, 0);
 }
