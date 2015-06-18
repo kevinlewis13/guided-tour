@@ -12,6 +12,8 @@ module.exports = function(app) { //app === an angular module
     $scope.currentWaypoint = 0;
     $scope.currentPositionMarker;
     $scope.onTour;
+    $scope.Tours = true;
+    $scope.NearbyTours = true;
     $scope.map;
 
     $scope.geoOptions = {
@@ -36,6 +38,10 @@ module.exports = function(app) { //app === an angular module
       });
     };
 
+    $scope.gotoMakeTour = function() {
+      $location.path("/create_tour");
+    }
+
     $scope.loadMap = function() {
       $scope.map = L.map('map');
       $scope.attachImagesToMap();
@@ -55,16 +61,6 @@ module.exports = function(app) { //app === an angular module
       });
     };
 
-    $scope.getNearby = function() {
-      $scope.getPosition(function( position ) {
-        //console.log('derp position: ' + position);
-        Tour.getNearby(position, function(err, data) {
-          if (err) return $scope.errors.push({msg: 'could not get nearby tours'});
-          $scope.tours = data;
-        });
-      });
-    };
-
     $scope.getPosition = function( callback ) {
       if ( navigator.geolocation ) {
         navigator.geolocation.getCurrentPosition(function( position ) {
@@ -76,6 +72,21 @@ module.exports = function(app) { //app === an angular module
         callback($scope.testingPosition); // this is for tests
       }
     };
+
+    $scope.getNearby = function() {
+      $scope.getPosition(function( position ) {
+        //console.log('derp position: ' + position);
+        Tour.getNearby(position, function(err, data) {
+          if (err) return $scope.errors.push({msg: 'could not get nearby tours'});
+          if (data.length < 1) {
+            $scope.Tours = false;
+            $scope.NearbyTours = false;
+          } else {
+          $scope.tours = data;
+        }
+        });
+      });
+    }
 
     $scope.handleGeoError = function( err ) {
       $scope.errors.push({ message: 'Could not get location', error: err });
