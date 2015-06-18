@@ -23,7 +23,11 @@
     </ul>
   </article>
   <section id="map"></section>
-  <section data-waypoint-info-directive></section>
+  <article data-ng-class="artifactState" class="modal-list">
+    <h1>{{currentTour.route[currentWaypoint].artifact.description}}</h1>
+    <h2>{{currentWaypoint}}</h2>
+    <img src="{{currentTour.route[currentWaypoint].artifact.url}}">
+  </article>
   <button data-ng-click="goHome()">Go Home</button>
 
 </section>

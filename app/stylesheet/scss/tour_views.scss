@@ -33,12 +33,17 @@ body {
 }
 
 .modal-list {
-  margin: 2em auto;
+  position: absolute;
+  top: 2em;
+  left: 50%;
   background: $formBGcolor;
   overflow: auto;
   max-width: 30%;
+  max-height: 90%;
   padding: 20px;
   border-radius: 3px;
+  overflow-y: scroll;
+  overflow-x: hidden;
   transition: all 600ms;
   input {
     display: block;
@@ -47,14 +52,17 @@ body {
     clear: left;
     margin: 10px;
   }
+  img {
+    max-width: 100%;
+  }
 }
 
 .modal-list-show {
-  transform: translate3d(0, 0, 0);
+  transform: translate3d(-50%, 0, 0);
 }
 
 .modal-list-hide {
-  transform: translate3d(0, -110%, 0);
+  transform: translate3d(-50%, -110%, 0);
 
 }
 
