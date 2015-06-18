@@ -7,6 +7,17 @@ module.exports = function( app ) {
     $scope.currentPositionMarker = null;
     $scope.map = null;
 
+    $scope.landmarkFormState = 'landmark-form-hidden';
+    $scope.formState = 'form-hidden';
+
+    $scope.toggleNav = function() {
+      if ($scope.formState === "form-hidden") {
+        $scope.formState = "form-showing";
+      } else {
+        $scope.formState = "form-hidden";
+      }
+    }
+
     $scope.loadMap = function() {
       $scope.map = L.map('map');
     };
@@ -60,8 +71,8 @@ module.exports = function( app ) {
       });
     };
 
-    $scope.addPin = function( $event, position ) {
-      $event.preventDefault();
+    $scope.addPin = function( position ) {
+      // $event.preventDefault();
       var newLandmark = {
         position: {
           type: "Point",
@@ -73,6 +84,7 @@ module.exports = function( app ) {
       };
       $scope.newLandmark.description = '';
       $scope.landmarks.push( newLandmark );
+      $scope.landmarkFormState = 'landmark-form-hidden';
     };
 
     $scope.postTour = function( tour ) {
@@ -89,6 +101,7 @@ module.exports = function( app ) {
         .error(function( err ) {
           $scope.errors.push({ message: 'Could not create tour', error: err });
         });
+        $scope.toggleNav();
     };
 
     $scope.goHome = function() {
