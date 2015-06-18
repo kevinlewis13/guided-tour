@@ -10,7 +10,7 @@ module.exports = function(app) { //app === an angular module
     $scope.tours           = [];
     $scope.currentTour     = null;
     $scope.currentWaypoint = 0;
-    $scope.currentPositionMarker = {};
+    $scope.currentPositionMarker;
     $scope.onTour = false;
     $scope.Tours = true;
     $scope.NearbyTours = true;
@@ -121,8 +121,8 @@ module.exports = function(app) { //app === an angular module
         if ( !$scope.currentPositionMarker ) {
           $scope.currentPositionMarker = L.marker([ position.latitude, position.longitude ]);
           $scope.currentPositionMarker.addTo( $scope.map );
-          return;
         } else {
+          console.log($scope.currentPositionMarker);
           $scope.currentPositionMarker.setLatLng([ position.latitude, position.longitude ]);
         }
         callback(position);
