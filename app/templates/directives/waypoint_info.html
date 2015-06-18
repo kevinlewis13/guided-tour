@@ -1,5 +1,7 @@
-<div>
-<h1>{{tour.waypoints[currentWaypoint].name}} Info:</h1>
+<div class="modal-list" data-ng-class="artifactState">
+<h1>{{currentTour.route[currentWaypoint].artifact.description}} Info:</h1>
+<h2>{{currentWaypoint}}</h2>
+<img src="{{currentTour.route[currentWaypoint].artifact.url}}">
 
 <!-- <button data-ng-click="changeState({state: 'navigation'})">Return To Navigation</button> -->
 

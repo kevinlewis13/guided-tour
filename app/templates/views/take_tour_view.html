@@ -11,20 +11,19 @@
         <button data-ng-click="startTour({tour: tour})">Take This Tour</button>
       </li> -->
   </div>
-  <header title="Tours" data-ng-if="!onTour">
-    <h2>Tour Guide App</h2>
-
-    <h1>If there are tours nearby, they'll be displayed below.</h1>
+  <article data-ng-if="!onTour" data-ng-class="tourListState" class="modal-list">
+    <h1>Nearby Tours</h1>
     <ul>
       <li data-ng-repeat="tour in tours">
         <h4>{{tour.name}}</h4>
         <p>Description: {{tour.description}}</p>
+        <!-- <p>Route: {{tour.route[0].artifact.description}}</p> -->
         <button data-ng-click="startTour({tour:tour})">Take This Tour</button>
       </li>
     </ul>
-  </header>
+  </article>
   <section id="map"></section>
-  <section id="artifactInfo" data-ng-directive="waypoint-info-directive"></section>
+  <section data-waypoint-info-directive></section>
   <button data-ng-click="goHome()">Go Home</button>
 
 </section>
