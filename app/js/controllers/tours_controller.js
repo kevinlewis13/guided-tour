@@ -158,11 +158,12 @@ module.exports = function(app) { //app === an angular module
     // var latLandMark;
     // var lngLandmark;
     // var count = 0;
-    $scope.compareDistance = function( position ) {
+    $scope.compareDistance = function( tour, position ) {
       var latLandMark;
       var lngLandmark;
       // var count = 0;
       $scope.currentWaypoint = $scope.currentWaypoint++ || 0;
+      console.log( $scope.currentWaypoint );
       if ($scope.currentWaypoint < $scope.route.length) {
         lngLandmark = $scope.route[$scope.currentWaypoint].position.coordinates[0];
         latLandMark = $scope.route[$scope.currentWaypoint].position.coordinates[1];
@@ -172,13 +173,10 @@ module.exports = function(app) { //app === an angular module
           {latitude: position.latitude, longitude: position.longitude}
         );
 
-        if (distance <= 100) {
-          console.log( distance );
+        if (distance <= 10000) {
           $scope.artifactState = 'modal-list-show';
-          // alert($scope.route[count].artifact.description);
-          console.log( 'currentWaypoint: ' + $scope.currentWaypoint );
-          return $scope.currentWaypoint++;
-          // count++;
+          alert( $scope.route[$scope.currentWaypoint].artifact.description )
+          $scope.currentWaypoint++;
         } else {
           $scope.artifactState = 'modal-list-hide';
         }
