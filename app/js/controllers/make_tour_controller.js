@@ -7,6 +7,11 @@ module.exports = function( app ) {
     $scope.currentPositionMarker = null;
     $scope.map = null;
 
+    $scope.toggle = function(element, className) {
+
+
+    }
+
     $scope.loadMap = function() {
       $scope.map = L.map('map');
     };
