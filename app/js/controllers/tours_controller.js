@@ -16,6 +16,8 @@ module.exports = function(app) { //app === an angular module
     $scope.currentPositionMarker;
     $scope.geoWatch = null;
     $scope.onTour;
+    $scope.Tours = true;
+    $scope.NearbyTours = true;
 
     $scope.geoOptions = {
       enableHighAccuracy: true,
@@ -44,6 +46,10 @@ module.exports = function(app) { //app === an angular module
 
     $scope.goHome = function() {
       $location.path('/');
+    }
+
+    $scope.gotoMakeTour = function() {
+      $location.path("/create_tour");
     }
 
     $scope.loadMap = function() {
@@ -105,7 +111,12 @@ module.exports = function(app) { //app === an angular module
         //console.log('derp position: ' + position);
         Tour.getNearby(position, function(err, data) {
           if (err) return $scope.errors.push({msg: 'could not get nearby tours'});
+          if (data.length < 1) {
+            $scope.Tours = false;
+            $scope.NearbyTours = false;
+          } else {
           $scope.tours = data;
+        }
         });
       });
     };
