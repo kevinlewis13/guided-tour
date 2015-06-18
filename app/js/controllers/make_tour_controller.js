@@ -72,7 +72,7 @@ module.exports = function( app ) {
     };
 
     $scope.addPin = function( position ) {
-      // $event.preventDefault();
+      console.log( position );
       var newLandmark = {
         position: {
           type: "Point",
@@ -102,6 +102,7 @@ module.exports = function( app ) {
           $scope.errors.push({ message: 'Could not create tour', error: err });
         });
         $scope.toggleNav();
+        $scope.landmarkListState = 'create-finale';
     };
 
     $scope.goHome = function() {
