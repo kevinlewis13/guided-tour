@@ -8,7 +8,8 @@
     <button class="add-landmark-btn" type="submit" data-ng-click="landmarkFormState='landmark-form-showing'">+</button>
   </form>
   <form id="landmark-form" data-ng-class="landmarkFormState">
-    <input id="input-description" type="text" required data-ng-model="newLandmark.description">
+    <input id="input-name" type="text" required data-ng-model="newLandmark.name" placeholder="Name">
+    <input id="input-description" type="text" required data-ng-model="newLandmark.description" placeholder="Description">
     <button type="submit" data-ng-click="addPin( currentPosition )">ADD</button>
   </form>
   <ol data-ng-if="landmarks" data-ng-class="landmarkListState">

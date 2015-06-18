@@ -82,9 +82,11 @@ module.exports = function( app ) {
           coordinates: [ position.longitude, position.latitude ]
         },
         artifact: {
+          name: $scope.newLandmark.name,
           description: $scope.newLandmark.description
         }
       };
+      $scope.newLandmark.name = '';
       $scope.newLandmark.description = '';
       $scope.landmarks.push( newLandmark );
       $scope.landmarkFormState = 'landmark-form-hidden';

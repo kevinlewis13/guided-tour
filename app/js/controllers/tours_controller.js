@@ -20,7 +20,7 @@ module.exports = function(app) { //app === an angular module
 
     $scope.geoOptions = {
       enableHighAccuracy: true,
-      maximumAge: 8000
+      maximumAge: 0
     };
 
     $scope.clearErrors = function() {
@@ -61,7 +61,7 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.findUser = function() {
-      $scope.watchPosition(function( position ) {
+      $scope.getPosition(function( position ) {
         $scope.map.setView([ position.latitude, position.longitude ], 18 ); // Set view centered on current position
       });
     };
@@ -137,7 +137,10 @@ module.exports = function(app) { //app === an angular module
         className: 'user-position-icon'
       });
       $scope.watchPosition(function( position ) {
-        $scope.map.setView([ position.latitude, position.longitude ], 18 );
+        $scope.tourCoordinates.push([position.latitude, position.longitude]);
+        $scope.map.fitBounds($scope.tourCoordinates, 18 );
+
+        console.log($scope.tourCoordinates);
         if ( !$scope.currentPositionMarker ) {
           $scope.currentPositionMarker = L.marker([ position.latitude, position.longitude ], {icon: userIcon});
           $scope.currentPositionMarker.addTo( $scope.map );
@@ -148,11 +151,21 @@ module.exports = function(app) { //app === an angular module
         callback(position);
       });
     };
-
+    $scope.tourCoordinates = [];
     $scope.plotTour = function() {
+
       $scope.route.forEach(function( landmark ) {
+        var rotateCoordinates = [];
         $scope.addLandmark( $scope.map, landmark.position.coordinates );
+        rotateCoordinates.push(landmark.position.coordinates[1]);
+        rotateCoordinates.push(landmark.position.coordinates[0]);
+        console.log('rotate coords');
+        console.log(rotateCoordinates);
+        $scope.tourCoordinates.push(rotateCoordinates);
       });
+      console.log('tourCoords');
+      console.log($scope.tourCoordinates);
+      $scope.map.fitBounds($scope.tourCoordinates);
     };
 
     $scope.addLandmark = function( map, position, options ) {
@@ -164,11 +177,12 @@ module.exports = function(app) { //app === an angular module
     // var latLandMark;
     // var lngLandmark;
     // var count = 0;
-    $scope.compareDistance = function( position ) {
+    $scope.compareDistance = function( tour, position ) {
       var latLandMark;
       var lngLandmark;
       // var count = 0;
       $scope.currentWaypoint = $scope.currentWaypoint++ || 0;
+      console.log( $scope.currentWaypoint );
       if ($scope.currentWaypoint < $scope.route.length) {
         lngLandmark = $scope.route[$scope.currentWaypoint].position.coordinates[0];
         latLandMark = $scope.route[$scope.currentWaypoint].position.coordinates[1];
@@ -178,13 +192,11 @@ module.exports = function(app) { //app === an angular module
           {latitude: position.latitude, longitude: position.longitude}
         );
 
-        if (distance <= 100) {
+        if (distance <= 10000) {
           console.log( distance );
           $scope.artifactState = 'modal-list-show';
-          // alert($scope.route[count].artifact.description);
-          console.log( 'currentWaypoint: ' + $scope.currentWaypoint );
-          return $scope.currentWaypoint++;
-          // count++;
+          alert( $scope.route[$scope.currentWaypoint].artifact.description )
+          $scope.currentWaypoint++;
         } else {
           $scope.artifactState = 'modal-list-hide';
         }
