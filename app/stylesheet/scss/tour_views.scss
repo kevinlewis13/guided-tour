@@ -1,5 +1,9 @@
 $formBGcolor: white;
 
+body {
+  overflow: hidden;
+}
+
 #map {
   position: fixed;
   top: 0;
@@ -62,11 +66,14 @@ $formBGcolor: white;
 
 .add-landmark-btn {
   position: absolute;
-  bottom: 20px;
-  right: 50%;
-  background-color: blue;
+  top: 85%;
+  left: 20px;
+  background-color: lightgreen;
   font-size: 2em;
-  border-radius: 10px;
+  width: 70px;
+  height: 70px;
+  border-radius: 35px;
+  box-shadow: 5px 5px 10px rgba(0,0,0,0.4);
   padding: 5px;
   color: white;
   transform: translate3D(50%, 0, 0);
@@ -74,10 +81,14 @@ $formBGcolor: white;
 
 .tour-nav-button {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background-color: #dbdbdb;
-  border-radius: 10px;
+  top: 90%;
+  right: 20px;
+  width: 80px;
+  height: 50px;
+  background-color: coral;
+  color: white;
+  font-weight: 800;
+  border-radius: 25px;
 }
 .form-hidden {
   transform: translate3D(100%, 0, 0);
@@ -110,4 +121,14 @@ $formBGcolor: white;
 }
 .landmark-form-hidden {
   transform: translate3d(-50%, 0, 0);
+}
+
+.create-finale {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  background: white;
+  overflow: auto;
+  border-radius: 3px;
 }

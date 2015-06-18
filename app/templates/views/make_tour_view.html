@@ -1,22 +1,23 @@
 <section data-ng-init="init()">
   <nav>
-    <button data-ng-click="toggleNav()" class="tour-nav-button">Add Tour Data</button>
+    <button data-ng-click="toggleNav()" class="tour-nav-button">CREATE</button>
   </nav>
   <header>
     <h1>Create A Tour</h1>
     <button data-ng-click="goHome()">Home</button>
   </header>
   <form>
-    <button class="add-landmark-btn" type="submit" data-ng-click="landmarkFormState='landmark-form-showing'">Add Landmark</button>
+    <button class="add-landmark-btn" type="submit" data-ng-click="landmarkFormState='landmark-form-showing'">+</button>
   </form>
   <form id="landmark-form" data-ng-class="landmarkFormState">
     <input id="input-description" type="text" required data-ng-model="newLandmark.description">
-    <button type="submit" data-ng-click="addPin( $event, currentPosition )">Add</button>
+    <button type="submit" data-ng-click="addPin( currentPosition )">ADD</button>
   </form>
-  <ol data-ng-if="landmarks">
+  <ol data-ng-if="landmarks" data-ng-class="landmarkListState">
     <li data-ng-repeat="landmark in landmarks">
       <h2>{{ landmark.artifact.description }}</h2>
     </li>
+    <button data-ng-if="landmarkListState==='create-finale'" data-ng-click="goHome()">DONE</button>
   </ol>
   <form data-ng-class="formState" class="tour-form form-group" data-ng-submit="postTour( tour )">
     <input class="" type="text" required data-ng-model="tour.name" placeholder="Tour Name" />

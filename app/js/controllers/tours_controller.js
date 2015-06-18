@@ -10,8 +10,8 @@ module.exports = function(app) { //app === an angular module
     $scope.tours           = [];
     $scope.currentTour     = null;
     $scope.currentWaypoint = 0;
-    $scope.currentPositionMarker;
-    $scope.onTour;
+    $scope.currentPositionMarker = {};
+    $scope.onTour = false;
     $scope.Tours = true;
     $scope.NearbyTours = true;
     $scope.map;
@@ -35,14 +35,14 @@ module.exports = function(app) { //app === an angular module
 
     $scope.getAll = function() {
       Tour.getAll(function(err, data) {
-        if (err) return $scope.errors.push({msg: 'could not get tours'});
+        if (err) return $scope.errors.push({msg: 'could not get all tours'});
         $scope.tours = data;
       });
     };
 
     $scope.gotoMakeTour = function() {
       $location.path("/create_tour");
-    }
+    };
 
     $scope.loadMap = function() {
       $scope.map = L.map('map');
@@ -81,14 +81,16 @@ module.exports = function(app) { //app === an angular module
         Tour.getNearby(position, function(err, data) {
           if (err) return $scope.errors.push({msg: 'could not get nearby tours'});
           if (data.length < 1) {
-            $scope.Tours = false;
-            $scope.NearbyTours = false;
+            // $scope.Tours = false;
+            // $scope.NearbyTours = false;
+            $location.path('/Could_Not_Find_Tours');
+
           } else {
           $scope.tours = data;
         }
         });
       });
-    }
+    };
 
     $scope.handleGeoError = function( err ) {
       $scope.errors.push({ message: 'Could not get location', error: err });
@@ -129,8 +131,7 @@ module.exports = function(app) { //app === an angular module
 
     $scope.plotTour = function() {
       $scope.route.forEach(function( landmark ) {
-
-        $scope.addLandmark( $scope.map, landmark.position.coordinates )
+        $scope.addLandmark( $scope.map, landmark.position.coordinates );
       });
     };
 
