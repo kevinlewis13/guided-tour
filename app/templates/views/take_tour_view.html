@@ -1,8 +1,8 @@
 <section class="fullscreen" data-ng-init="loadMap()">
   <section class="fullscreen" id="map"></section>
-  <button class="go-home-button" data-ng-click="goHome()">Go Home</button>
+  <button class="go-home-button" data-ng-click="goHome()">Home</button>
 
-  <article data-ng-if="!onTour" data-ng-class="tourListState" class="modal-list">
+  <article data-ng-if="!onTour" data-ng-class="tourListState" class="modal-list modal-list-show">
     <h1>Nearby Tours</h1>
     <ul>
       <li data-ng-repeat="tour in tours">

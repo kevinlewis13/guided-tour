@@ -76,6 +76,16 @@ body {
   img {
     max-width: 100%;
   }
+  button {
+    background-color: coral;
+    font-size: 1em;
+    border-radius: 1.5em;
+    text-align: center;
+    padding: .3em .5em;
+    color: white;
+    font-weight: 800;
+
+  }
 }
 
 .modal-list-show {
@@ -83,7 +93,7 @@ body {
 }
 
 .modal-list-hide {
-  transform: translate3d(-50%, -110%, 0);
+  transform: translate3d(-50%, -125%, 0);
 }
 
 .home-button {
@@ -130,17 +140,20 @@ body {
   bottom: -50%;
   left: 50%;
   height: 50%;
+  width: 100%;
+  max-width: 30em;
   transition: all 600ms;
   input[type='text'] {
-    font-size: 2em;
-    min-width: 80%;
-    max-width: 80%;
+    font-size: 3em;
+    width: 100%;
+    padding: 0.25em;
   }
   button {
     background: coral;
-    font-size: 2em;
+    font-size: 3em;
     border-radius: 10px;
     color: white;
+    width: 100%
   }
 }
 
