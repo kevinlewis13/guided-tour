@@ -190,7 +190,7 @@ module.exports = function(app) { //app === an angular module
       var lngLandmark;
       //$scope.currentWaypoint = $scope.currentWaypoint++ || 0;
       console.log( $scope.currentWaypoint );
-      if ($scope.currentWaypoint < $scope.route.length -1) {
+      if ($scope.currentWaypoint < $scope.route.length) {
         lngLandmark = $scope.route[$scope.currentWaypoint].position.coordinates[0];
         latLandMark = $scope.route[$scope.currentWaypoint].position.coordinates[1];
 
@@ -199,36 +199,42 @@ module.exports = function(app) { //app === an angular module
           {latitude: position.latitude, longitude: position.longitude}
         );
 
-        if (distance <= 200) {
+        if (distance <= 20000) {
           console.log( distance );
           //$scope.updateClass();
           $scope.artifactState = 'modal-list-show';
           $scope.$digest();
           //$scope.artifactState = true;
-          alert( $scope.route[$scope.currentWaypoint].artifact.description )
+          //alert( $scope.route[$scope.currentWaypoint].artifact.description )
           //$scope.currentWaypoint++;
         } else {
           // $scope.artifactState = 'modal-list-hide';
         }
-      } else {
+      } else if ($scope.currentWaypoint === $scope.currentTour.route.length) {
+        var node = document.createElement('p');
+        var text = document.createTextNode("Thanks for taking this tour");
+        node.appendChild(text);
+        document.getElementById('waypoint-modal').appendChild(node);
+        document.getElementById('endbutton').innerHTML = "Take another tour!";
+        $scope.artifactState = 'modal-list-show';
+        $scope.$digest();
         // alert("tour all done!")
+        //$scope.currentWaypoint = $scope.route.length;
+        //document.getElement
+        //document.appendChild
       }
     };
 
     $scope.nextWaypoint = function() {
-      if ($scope.currentWaypoint < $scope.currentTour.route.length - 1) {
-        $scope.currentWaypoint++;
+        setTimeout(function() {
+          $scope.currentWaypoint++;
+        }, 600);
+      if ($scope.currentWaypoint < $scope.currentTour.route.length) {
         $scope.artifactState = 'modal-list-hide';
-      }
-    };
-
-    $scope.updateClass = function() {
-      $scope.artifactState = true;
-    };
-
-    $scope.prevWaypoint = function() {
-      if ($scope.currentWaypoint > 0) {
-        $scope.currentWaypoint--;
+      } else if ($scope.currentTour.route.length === $scope.currentWaypoint) {
+        $scope.artifactState = 'modal-list-show';
+        // $scope.$digest();
+        $location.path('/');
       }
     };
 
