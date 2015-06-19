@@ -45,7 +45,7 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.loadMap = function() {
-      $scope.artifactState = 'modal-list-show';
+      $scope.artifactState = 'modal-list-hide';
       $scope.map = L.map('map', {
         dragging: true,
         zoomControl: false
@@ -201,7 +201,10 @@ module.exports = function(app) { //app === an angular module
 
         if (distance <= 200) {
           console.log( distance );
+          //$scope.updateClass();
           $scope.artifactState = 'modal-list-show';
+          $scope.$digest();
+          //$scope.artifactState = true;
           alert( $scope.route[$scope.currentWaypoint].artifact.description )
           //$scope.currentWaypoint++;
         } else {
@@ -215,8 +218,12 @@ module.exports = function(app) { //app === an angular module
     $scope.nextWaypoint = function() {
       if ($scope.currentWaypoint < $scope.currentTour.route.length - 1) {
         $scope.currentWaypoint++;
-        $scope.artifactState = 'modal-list-show';
+        $scope.artifactState = 'modal-list-hide';
       }
+    };
+
+    $scope.updateClass = function() {
+      $scope.artifactState = true;
     };
 
     $scope.prevWaypoint = function() {
