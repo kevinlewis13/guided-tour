@@ -10,13 +10,13 @@ module.exports = function(app) { //app === an angular module
     $scope.tours           = [];
     $scope.currentTour     = null;
     $scope.currentWaypoint = 0;
-    $scope.currentPositionMarker;
+    $scope.currentPositionMarker = false;
     $scope.onTour = false;
     $scope.Tours = true;
     $scope.NearbyTours = true;
-    $scope.map;
+    $scope.map = false;
     //$scope.tourListState = 'modal-list-show';
-    $scope.artifactState;
+    $scope.artifactState = false;
 
     $scope.geoOptions = {
       enableHighAccuracy: true,
@@ -205,7 +205,7 @@ module.exports = function(app) { //app === an angular module
           $scope.artifactState = 'modal-list-show';
           $scope.$digest();
           //$scope.artifactState = true;
-          alert( $scope.route[$scope.currentWaypoint].artifact.description )
+          alert( $scope.route[$scope.currentWaypoint].artifact.description );
           //$scope.currentWaypoint++;
         } else {
           // $scope.artifactState = 'modal-list-hide';
