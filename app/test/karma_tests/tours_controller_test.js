@@ -24,6 +24,11 @@ describe('takeTourController', function() {
     expect(typeof tourController).toBe('object');
     expect(Array.isArray($scope.tours));
     expect(typeof $scope.loadMap).toBe('function');
+  });
+
+  it('should be able to load a map', function() {
+    var tourController = $cc('takeTourController', {$scope: $scope});
+    $scope.loadMap();
     expect(typeof $scope.map).toBe('object');
   });
 
@@ -123,10 +128,6 @@ describe('takeTourController', function() {
       $scope.updatePosition(testPos);
       expect($scope.currentPosition.latitude).toBe(testPos.latitude);
       expect($scope.currentPosition.longitude).toBe(testPos.longitude);*/
-    });
-
-    it('should correctly start the user on a tour', function() {
-
     });
   });
 });
