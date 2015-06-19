@@ -1,4 +1,6 @@
-<section data-ng-init="loadMap()">
+<section class="fullscreen" data-ng-init="loadMap()">
+  <section class="fullscreen" id="map"></section>
+  <button class="go-home-button" data-ng-click="goHome()">Go Home</button>
 
  <!--  <div data-ng-if="!Tours">
       <p>Unfortunately there are not any tours within 100 miles of you, how about you make one?</p>
@@ -22,13 +24,11 @@
       </li>
     </ul>
   </article>
-  <section id="map"></section>
   <article data-ng-class="artifactState" class="modal-list">
     <h1>{{currentTour.route[currentWaypoint].artifact.description}}</h1>
     <h2>{{currentWaypoint}}</h2>
     <img src="{{currentTour.route[currentWaypoint].artifact.url}}">
     <button data-ng-click="artifactState='modal-list-hide'">OK</button>
   </article>
-  <button data-ng-click="goHome()">Go Home</button>
 
 </section>
