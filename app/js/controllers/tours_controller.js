@@ -9,14 +9,14 @@ module.exports = function(app) { //app === an angular module
     $scope.route           = [];
     $scope.tours           = [];
     $scope.currentTour     = null;
-    $scope.currentWaypoint;
+    $scope.currentWaypoint = 0;
     $scope.currentPositionMarker;
     $scope.onTour = false;
     $scope.Tours = true;
     $scope.NearbyTours = true;
     $scope.map;
-    $scope.tourListState = 'modal-list-show';
-    $scope.artifactState = 'modal-list-hide';
+    //$scope.tourListState = 'modal-list-show';
+    $scope.artifactState;
 
     $scope.geoOptions = {
       enableHighAccuracy: true,
@@ -45,6 +45,7 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.loadMap = function() {
+      $scope.artifactState = 'modal-list-show';
       $scope.map = L.map('map', {
         dragging: true,
         zoomControl: false
@@ -52,6 +53,7 @@ module.exports = function(app) { //app === an angular module
       $scope.attachImagesToMap();
       $scope.findUser();
       $scope.getNearby();
+
     };
 
     $scope.attachImagesToMap = function() {
@@ -62,7 +64,7 @@ module.exports = function(app) { //app === an angular module
 
     $scope.findUser = function() {
       $scope.getPosition(function( position ) {
-        $scope.map.setView([ position.latitude, position.longitude ], 18 ); // Set view centered on current position
+        $scope.map.setView([ position.latitude, position.longitude ], 18 ); // Set view centered on current position for initial background
       });
     };
 
@@ -79,6 +81,11 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.watchPosition = function( callback ) {
+      // setTimeout(function() {
+      //   $scope.getPosition(function( position ) {
+      //     callback(position);
+      //   })
+      // }, 3000)
       if ( navigator.geolocation ) {
         if ( window.watcher ) {
           console.log( 'watcher id: ' + window.watcher );
@@ -95,6 +102,7 @@ module.exports = function(app) { //app === an angular module
     $scope.getNearby = function() {
       $scope.getPosition(function( position ) {
         //console.log('derp position: ' + position);
+        //this should be rolled into the first get position call
         Tour.getNearby(position, function(err, data) {
           if (err) return $scope.errors.push({msg: 'could not get nearby tours'});
           if (data.length < 1) {
@@ -115,7 +123,8 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.startTour = function(tour) {
-      $scope.tourListState = 'modal-list-hide';
+      //$scope.tourListState = 'modal-list-hide';
+
       $scope.onTour = true; // to get buttons to leave, most likely there's a better way
       $scope.route = tour.tour.route;
       $scope.trackUser(function(position) {
@@ -137,6 +146,7 @@ module.exports = function(app) { //app === an angular module
         className: 'user-position-icon'
       });
       $scope.watchPosition(function( position ) {
+        //something will need to pop here.
         $scope.tourCoordinates.push([position.latitude, position.longitude]);
         $scope.map.fitBounds($scope.tourCoordinates, 18 );
 
@@ -174,16 +184,13 @@ module.exports = function(app) { //app === an angular module
         fill: '#fca'
       }).addTo( map );
     };
-    // var latLandMark;
-    // var lngLandmark;
-    // var count = 0;
+
     $scope.compareDistance = function( tour, position ) {
       var latLandMark;
       var lngLandmark;
-      // var count = 0;
-      $scope.currentWaypoint = $scope.currentWaypoint++ || 0;
+      //$scope.currentWaypoint = $scope.currentWaypoint++ || 0;
       console.log( $scope.currentWaypoint );
-      if ($scope.currentWaypoint < $scope.route.length) {
+      if ($scope.currentWaypoint < $scope.route.length -1) {
         lngLandmark = $scope.route[$scope.currentWaypoint].position.coordinates[0];
         latLandMark = $scope.route[$scope.currentWaypoint].position.coordinates[1];
 
@@ -192,13 +199,13 @@ module.exports = function(app) { //app === an angular module
           {latitude: position.latitude, longitude: position.longitude}
         );
 
-        if (distance <= 10000) {
+        if (distance <= 200) {
           console.log( distance );
           $scope.artifactState = 'modal-list-show';
           alert( $scope.route[$scope.currentWaypoint].artifact.description )
-          $scope.currentWaypoint++;
+          //$scope.currentWaypoint++;
         } else {
-          $scope.artifactState = 'modal-list-hide';
+          // $scope.artifactState = 'modal-list-hide';
         }
       } else {
         // alert("tour all done!")
@@ -206,8 +213,9 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.nextWaypoint = function() {
-      if ($scope.currentWaypoint < $scope.currentTour.waypoints.length - 1) {
+      if ($scope.currentWaypoint < $scope.currentTour.route.length - 1) {
         $scope.currentWaypoint++;
+        $scope.artifactState = 'modal-list-show';
       }
     };
 

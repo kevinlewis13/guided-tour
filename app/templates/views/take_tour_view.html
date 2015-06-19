@@ -2,17 +2,6 @@
   <section class="fullscreen" id="map"></section>
   <button class="go-home-button" data-ng-click="goHome()">Go Home</button>
 
- <!--  <div data-ng-if="!Tours">
-      <p>Unfortunately there are not any tours within 100 miles of you, how about you make one?</p>
-      <button data-ng-click="gotoMakeTour()">Create a Tour</button>
-      <p>If you want to browse all tours click the button</p>
-      <button data-ng-click="getAll()">All tours</button>
-         <li data-ng-repeat="tour in tours">
-        <h4>{{tour.name}}</h4>
-        <p>Description: {{tour.description}}</p>
-        <button data-ng-click="startTour({tour: tour})">Take This Tour</button>
-      </li> -->
-  </div>
   <article data-ng-if="!onTour" data-ng-class="tourListState" class="modal-list">
     <h1>Nearby Tours</h1>
     <ul>
@@ -24,11 +13,12 @@
       </li>
     </ul>
   </article>
-  <article data-ng-class="artifactState" class="modal-list">
+  <section id="map"></section>
+  <article class="modal-list" data-ng-class="artifactState"  data-ng-model="currentWaypoint">
     <h1>{{currentTour.route[currentWaypoint].artifact.description}}</h1>
     <h2>{{currentWaypoint}}</h2>
     <img src="{{currentTour.route[currentWaypoint].artifact.url}}">
-    <button data-ng-click="artifactState='modal-list-hide'">OK</button>
+    <button data-ng-click="nextWaypoint()">OK</button>
   </article>
 
 </section>
