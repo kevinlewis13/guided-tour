@@ -121,6 +121,7 @@ module.exports = function(grunt) {
         src: ['app/**/!(bundle).js'],
         options: {
           globals: {
+            document: true,
             angular: true,
             L: true,
             navigator: true,

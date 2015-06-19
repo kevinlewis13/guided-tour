@@ -10,13 +10,13 @@ module.exports = function(app) { //app === an angular module
     $scope.tours           = [];
     $scope.currentTour     = null;
     $scope.currentWaypoint = 0;
-    $scope.currentPositionMarker;
+    $scope.currentPositionMarker = false;
     $scope.onTour = false;
     $scope.Tours = true;
     $scope.NearbyTours = true;
-    $scope.map;
+    $scope.map = false;
     //$scope.tourListState = 'modal-list-show';
-    $scope.artifactState;
+    $scope.artifactState = false;
 
     $scope.geoOptions = {
       enableHighAccuracy: true,
