@@ -46,7 +46,10 @@ module.exports = function(app) { //app === an angular module
 
     $scope.loadMap = function() {
       $scope.artifactState = 'modal-list-show';
-      $scope.map = L.map('map');
+      $scope.map = L.map('map', {
+        dragging: true,
+        zoomControl: false
+      });
       $scope.attachImagesToMap();
       $scope.findUser();
       $scope.getNearby();
@@ -139,6 +142,9 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.trackUser = function(callback) {
+      var userIcon = L.divIcon({
+        className: 'user-position-icon'
+      });
       $scope.watchPosition(function( position ) {
         //something will need to pop here.
         $scope.tourCoordinates.push([position.latitude, position.longitude]);
@@ -146,7 +152,7 @@ module.exports = function(app) { //app === an angular module
 
         console.log($scope.tourCoordinates);
         if ( !$scope.currentPositionMarker ) {
-          $scope.currentPositionMarker = L.marker([ position.latitude, position.longitude ]);
+          $scope.currentPositionMarker = L.marker([ position.latitude, position.longitude ], {icon: userIcon});
           $scope.currentPositionMarker.addTo( $scope.map );
         } else {
           console.log($scope.currentPositionMarker);

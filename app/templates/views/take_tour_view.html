@@ -1,4 +1,6 @@
-<section data-ng-init="loadMap()">
+<section class="fullscreen" data-ng-init="loadMap()">
+  <section class="fullscreen" id="map"></section>
+  <button class="go-home-button" data-ng-click="goHome()">Go Home</button>
 
   <article data-ng-if="!onTour" data-ng-class="tourListState" class="modal-list">
     <h1>Nearby Tours</h1>
@@ -18,6 +20,5 @@
     <img src="{{currentTour.route[currentWaypoint].artifact.url}}">
     <button data-ng-click="nextWaypoint()">OK</button>
   </article>
-  <button data-ng-click="goHome()">Go Home</button>
 
 </section>
