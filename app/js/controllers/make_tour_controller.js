@@ -16,10 +16,13 @@ module.exports = function( app ) {
       } else {
         $scope.formState = "form-hidden";
       }
-    }
+    };
 
     $scope.loadMap = function() {
-      $scope.map = L.map('map');
+      $scope.map = L.map('map', {
+        dragging: true,
+        zoomControl: false
+      });
     };
 
     $scope.geoOptions = {
@@ -79,9 +82,11 @@ module.exports = function( app ) {
           coordinates: [ position.longitude, position.latitude ]
         },
         artifact: {
+          name: $scope.newLandmark.name,
           description: $scope.newLandmark.description
         }
       };
+      $scope.newLandmark.name = '';
       $scope.newLandmark.description = '';
       $scope.landmarks.push( newLandmark );
       $scope.landmarkFormState = 'landmark-form-hidden';

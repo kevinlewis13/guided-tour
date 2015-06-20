@@ -3,3 +3,5 @@
 build
 node_modules
 **/application.css
+**/*.log
+**/.DS_Store

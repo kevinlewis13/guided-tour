@@ -10,15 +10,17 @@ module.exports = function(app) { //app === an angular module
     $scope.tours           = [];
     $scope.currentTour     = null;
     $scope.currentWaypoint = 0;
-    $scope.currentPositionMarker;
-    $scope.onTour;
+    $scope.currentPositionMarker = false;
+    $scope.onTour = false;
     $scope.Tours = true;
     $scope.NearbyTours = true;
-    $scope.map;
+    $scope.map = false;
+    //$scope.tourListState = 'modal-list-show';
+    $scope.artifactState = false;
 
     $scope.geoOptions = {
       enableHighAccuracy: true,
-      maximumAge: 8000
+      maximumAge: 0
     };
 
     $scope.clearErrors = function() {
@@ -33,20 +35,25 @@ module.exports = function(app) { //app === an angular module
 
     $scope.getAll = function() {
       Tour.getAll(function(err, data) {
-        if (err) return $scope.errors.push({msg: 'could not get tours'});
+        if (err) return $scope.errors.push({msg: 'could not get all tours'});
         $scope.tours = data;
       });
     };
 
     $scope.gotoMakeTour = function() {
       $location.path("/create_tour");
-    }
+    };
 
     $scope.loadMap = function() {
-      $scope.map = L.map('map');
+      $scope.artifactState = 'modal-list-hide';
+      $scope.map = L.map('map', {
+        dragging: true,
+        zoomControl: false
+      });
       $scope.attachImagesToMap();
       $scope.findUser();
       $scope.getNearby();
+
     };
 
     $scope.attachImagesToMap = function() {
@@ -56,8 +63,8 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.findUser = function() {
-      $scope.watchPosition(function( position ) {
-        $scope.map.setView([ position.latitude, position.longitude ], 18 ); // Set view centered on current position
+      $scope.getPosition(function( position ) {
+        $scope.map.setView([ position.latitude, position.longitude ], 18 ); // Set view centered on current position for initial background
       });
     };
 
@@ -74,9 +81,15 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.watchPosition = function( callback ) {
+      // setTimeout(function() {
+      //   $scope.getPosition(function( position ) {
+      //     callback(position);
+      //   })
+      // }, 3000)
       if ( navigator.geolocation ) {
         if ( window.watcher ) {
-          navigator.geolocation.clearWatch( window.watcher );
+          console.log( 'watcher id: ' + window.watcher );
+          // navigator.geolocation.clearWatch( window.watcher );
         }
         window.watcher = navigator.geolocation.watchPosition(function( position ) {
           if ( typeof callback === 'function' ) {
@@ -89,6 +102,7 @@ module.exports = function(app) { //app === an angular module
     $scope.getNearby = function() {
       $scope.getPosition(function( position ) {
         //console.log('derp position: ' + position);
+        //this should be rolled into the first get position call
         Tour.getNearby(position, function(err, data) {
           if (err) return $scope.errors.push({msg: 'could not get nearby tours'});
           if (data.length < 1) {
@@ -98,10 +112,10 @@ module.exports = function(app) { //app === an angular module
 
           } else {
           $scope.tours = data;
-        }
+          }
         });
       });
-    }
+    };
 
     $scope.handleGeoError = function( err ) {
       $scope.errors.push({ message: 'Could not get location', error: err });
@@ -109,38 +123,59 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.startTour = function(tour) {
+      //$scope.tourListState = 'modal-list-hide';
+
       $scope.onTour = true; // to get buttons to leave, most likely there's a better way
       $scope.route = tour.tour.route;
       $scope.trackUser(function(position) {
-        $scope.compareDistance(tour, position)
+        console.log("location found");
+      });
+      $scope.watchPosition(function(position) {
+        $scope.compareDistance(tour, position);
       });
       $scope.plotTour();
 
-      if ($scope.currentTour !== tour) {
-        $scope.currentTour = tour;
-        $scope.currentWaypoint = 0;
+      if ($scope.currentTour !== tour.tour) {
+        $scope.currentTour = tour.tour;
+        // $scope.currentWaypoint = 0;
       }
     };
 
     $scope.trackUser = function(callback) {
+      var userIcon = L.divIcon({
+        className: 'user-position-icon'
+      });
       $scope.watchPosition(function( position ) {
-        $scope.map.setView([ position.latitude, position.longitude ], 18 );
+        //something will need to pop here.
+        $scope.tourCoordinates.push([position.latitude, position.longitude]);
+        $scope.map.fitBounds($scope.tourCoordinates, 18 );
+
+        console.log($scope.tourCoordinates);
         if ( !$scope.currentPositionMarker ) {
-          $scope.currentPositionMarker = L.marker([ position.latitude, position.longitude ]);
+          $scope.currentPositionMarker = L.marker([ position.latitude, position.longitude ], {icon: userIcon});
           $scope.currentPositionMarker.addTo( $scope.map );
-          return;
         } else {
+          console.log($scope.currentPositionMarker);
           $scope.currentPositionMarker.setLatLng([ position.latitude, position.longitude ]);
         }
         callback(position);
       });
     };
-
+    $scope.tourCoordinates = [];
     $scope.plotTour = function() {
-      $scope.route.forEach(function( landmark ) {
 
-        $scope.addLandmark( $scope.map, landmark.position.coordinates )
+      $scope.route.forEach(function( landmark ) {
+        var rotateCoordinates = [];
+        $scope.addLandmark( $scope.map, landmark.position.coordinates );
+        rotateCoordinates.push(landmark.position.coordinates[1]);
+        rotateCoordinates.push(landmark.position.coordinates[0]);
+        console.log('rotate coords');
+        console.log(rotateCoordinates);
+        $scope.tourCoordinates.push(rotateCoordinates);
       });
+      console.log('tourCoords');
+      console.log($scope.tourCoordinates);
+      $scope.map.fitBounds($scope.tourCoordinates);
     };
 
     $scope.addLandmark = function( map, position, options ) {
@@ -150,34 +185,58 @@ module.exports = function(app) { //app === an angular module
       }).addTo( map );
     };
 
-    var count = 0;
-    $scope.compareDistance = function(tour, position) {
+    $scope.compareDistance = function( tour, position ) {
       var latLandMark;
       var lngLandmark;
-      lngLandmark = $scope.route[count].position.coordinates[0];
-      latLandMark = $scope.route[count].position.coordinates[1];
+      //$scope.currentWaypoint = $scope.currentWaypoint++ || 0;
+      console.log( $scope.currentWaypoint );
+      if ($scope.currentWaypoint < $scope.route.length) {
+        lngLandmark = $scope.route[$scope.currentWaypoint].position.coordinates[0];
+        latLandMark = $scope.route[$scope.currentWaypoint].position.coordinates[1];
 
-      var distance = geolib.getDistance(
-        {latitude: latLandMark, longitude: lngLandmark },
-        {latitude: position.latitude, longitude: position.longitude}
-      );
+        var distance = geolib.getDistance(
+          {latitude: latLandMark, longitude: lngLandmark },
+          {latitude: position.latitude, longitude: position.longitude}
+        );
 
-      if (distance <= 5) {
-        alert($scope.route[count].artifact.description);
-        alert($scope.currentWaypoint);
-        count++;
+        if (distance <= 20000) {
+          console.log( distance );
+          //$scope.updateClass();
+          $scope.artifactState = 'modal-list-show';
+          $scope.$digest();
+          //$scope.artifactState = true;
+          //alert( $scope.route[$scope.currentWaypoint].artifact.description )
+          //$scope.currentWaypoint++;
+        } else {
+          // $scope.artifactState = 'modal-list-hide';
+        }
+      } else if ($scope.currentWaypoint === $scope.currentTour.route.length) {
+        var node = document.createElement('p');
+        var text = document.createTextNode("Thanks for taking this tour");
+        node.appendChild(text);
+        document.getElementById('waypoint-modal').appendChild(node);
+        document.getElementById('endbutton').innerHTML = "Take another tour!";
+        document.getElementById('artifact-image').src = "http://cdn.playbuzz.com/cdn/b1581f3e-858f-4209-a112-5b919b0b2247/174433d6-0f1e-4f3b-ba7a-1ddb843c38b9.jpg";
+        $scope.artifactState = 'modal-list-show';
+        $scope.$digest();
+        // alert("tour all done!")
+        //$scope.currentWaypoint = $scope.route.length;
+        //document.getElement
+        //document.appendChild
       }
     };
 
     $scope.nextWaypoint = function() {
-      if ($scope.currentWaypoint < $scope.currentTour.waypoints.length - 1) {
-        $scope.currentWaypoint++;
-      }
-    };
-
-    $scope.prevWaypoint = function() {
-      if ($scope.currentWaypoint > 0) {
-        $scope.currentWaypoint--;
+        setTimeout(function() {
+          $scope.currentWaypoint++;
+        }, 600);
+      if ($scope.currentWaypoint < $scope.currentTour.route.length) {
+        $scope.artifactState = 'modal-list-hide';
+      } else if ($scope.currentTour.route.length === $scope.currentWaypoint) {
+        //$scope.currentTour.route[$scope.currentWaypoint].artifact.url = 'http://cdn.playbuzz.com/cdn/b1581f3e-858f-4209-a112-5b919b0b2247/174433d6-0f1e-4f3b-ba7a-1ddb843c38b9.jpg'
+        $scope.artifactState = 'modal-list-show';
+        // $scope.$digest();
+        $location.path('/');
       }
     };
 

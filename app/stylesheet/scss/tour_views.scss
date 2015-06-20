@@ -5,12 +5,25 @@ body {
 }
 
 #map {
-  position: fixed;
+  position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: -100;
+  z-index: 0;
+}
+
+.go-home-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  background: coral;
+  color: white;
+  font-weight: 800;
+  cursor: pointer;
 }
 
 .tour-form {
@@ -30,6 +43,63 @@ body {
     clear: left;
     margin: 10px;
   }
+}
+
+.fullscreen {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.modal-list {
+  position: absolute;
+  top: 2em;
+  left: 50%;
+  background: $formBGcolor;
+  overflow: auto;
+  width: 90%;
+  max-width: 20em;
+  max-height: 90%;
+  padding: 20px;
+  border-radius: 3px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  transition: all 600ms;
+  input {
+    display: block;
+    float: left;
+    width: 90%;
+    clear: left;
+    margin: 10px;
+  }
+  img {
+    max-width: 100%;
+  }
+  button {
+    background-color: coral;
+    font-size: 1em;
+    border-radius: 1.5em;
+    text-align: center;
+    padding: .3em .5em;
+    color: white;
+    font-weight: 800;
+
+  }
+}
+
+.modal-list-show {
+  transform: translate3d(-50%, 0, 0);
+}
+
+.modal-list-hide {
+  transform: translate3d(-50%, -125%, 0);
+}
+
+.home-button {
+  position: fixed;
+  bottom: 20px;
+  left: 47%;
 }
 
 .add-landmark-btn {
@@ -70,17 +140,20 @@ body {
   bottom: -50%;
   left: 50%;
   height: 50%;
+  width: 100%;
+  max-width: 30em;
   transition: all 600ms;
   input[type='text'] {
-    font-size: 2em;
-    min-width: 80%;
-    max-width: 100%;
+    font-size: 3em;
+    width: 100%;
+    padding: 0.25em;
   }
   button {
     background: coral;
-    font-size: 2em;
+    font-size: 3em;
     border-radius: 10px;
     color: white;
+    width: 100%
   }
 }
 

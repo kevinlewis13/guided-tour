@@ -1,30 +1,24 @@
-<section data-ng-init="loadMap()">
+<section class="fullscreen" data-ng-init="loadMap()">
+  <section class="fullscreen" id="map"></section>
+  <button class="go-home-button" data-ng-click="goHome()">Home</button>
 
- <!--  <div data-ng-if="!Tours">
-      <p>Unfortunately there are not any tours within 100 miles of you, how about you make one?</p>
-      <button data-ng-click="gotoMakeTour()">Create a Tour</button>
-      <p>If you want to browse all tours click the button</p>
-      <button data-ng-click="getAll()">All tours</button>
-         <li data-ng-repeat="tour in tours">
-        <h4>{{tour.name}}</h4>
-        <p>Description: {{tour.description}}</p>
-        <button data-ng-click="startTour({tour: tour})">Take This Tour</button>
-      </li>
-  </div> -->
-  <header title="Tours" data-ng-if="!onTour">
-    <h2>Tour Guide App</h2>
-
-    <h1>If there are tours nearby, they'll be displayed below.</h1>
+  <article data-ng-if="!onTour" data-ng-class="tourListState" class="modal-list modal-list-show">
+    <h1>Nearby Tours</h1>
     <ul>
       <li data-ng-repeat="tour in tours">
         <h4>{{tour.name}}</h4>
         <p>Description: {{tour.description}}</p>
+        <!-- <p>Route: {{tour.route[0].artifact.description}}</p> -->
         <button data-ng-click="startTour({tour:tour})">Take This Tour</button>
       </li>
     </ul>
-  </header>
-  <section id="map"></section>
-  <section id="artifactInfo" data-ng-directive="waypoint-info-directive"></section>
-  <button data-ng-click="goHome()">Go Home</button>
+  </article>
+  <!-- <section id="map"></section> -->
+  <article id="waypoint-modal" class="modal-list" data-ng-class="artifactState"  data-ng-model="currentWaypoint">
+    <h1>{{currentTour.route[currentWaypoint].artifact.name}}</h1>
+    <h2>{{currentTour.route[currentWaypoint].artifact.description}}</h2>
+    <img id="artifact-image" src="{{currentTour.route[currentWaypoint].artifact.url}}">
+    <button id="endbutton" data-ng-click="nextWaypoint()">OK</button>
+  </article>
 
 </section>
