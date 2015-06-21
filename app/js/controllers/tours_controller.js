@@ -88,6 +88,7 @@ module.exports = function(app) { //app === an angular module
       // }, 3000)
       if ( navigator.geolocation ) {
         if ( window.watcher ) {
+          //this console.log triggers only on starting a tour
           console.log( 'watcher id: ' + window.watcher );
           // navigator.geolocation.clearWatch( window.watcher );
         }
@@ -123,9 +124,8 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.startTour = function(tour) {
+      $scope.onTour = true; // to get buttons to leave, most likely there's a better way, possibly with :
       //$scope.tourListState = 'modal-list-hide';
-
-      $scope.onTour = true; // to get buttons to leave, most likely there's a better way
       $scope.route = tour.tour.route;
       $scope.trackUser(function(position) {
         console.log("location found");
@@ -137,7 +137,6 @@ module.exports = function(app) { //app === an angular module
 
       if ($scope.currentTour !== tour.tour) {
         $scope.currentTour = tour.tour;
-        // $scope.currentWaypoint = 0;
       }
     };
 
@@ -188,7 +187,6 @@ module.exports = function(app) { //app === an angular module
     $scope.compareDistance = function( tour, position ) {
       var latLandMark;
       var lngLandmark;
-      //$scope.currentWaypoint = $scope.currentWaypoint++ || 0;
       console.log( $scope.currentWaypoint );
       if ($scope.currentWaypoint < $scope.route.length) {
         lngLandmark = $scope.route[$scope.currentWaypoint].position.coordinates[0];
@@ -201,13 +199,10 @@ module.exports = function(app) { //app === an angular module
 
         if (distance <= 20000) {
           console.log( distance );
-          //$scope.updateClass();
           $scope.artifactState = 'modal-list-show';
           $scope.$digest();
-          //$scope.artifactState = true;
-          //alert( $scope.route[$scope.currentWaypoint].artifact.description )
-          //$scope.currentWaypoint++;
         } else {
+          //could be an else if so that if user walks away from waypoint without clicking ok it auto hides the modal.
           // $scope.artifactState = 'modal-list-hide';
         }
       } else if ($scope.currentWaypoint === $scope.currentTour.route.length) {
@@ -216,13 +211,9 @@ module.exports = function(app) { //app === an angular module
         node.appendChild(text);
         document.getElementById('waypoint-modal').appendChild(node);
         document.getElementById('endbutton').innerHTML = "Take another tour!";
-        //document.getElementById('artifact-image').src = "http://cdn.playbuzz.com/cdn/b1581f3e-858f-4209-a112-5b919b0b2247/174433d6-0f1e-4f3b-ba7a-1ddb843c38b9.jpg";
+        document.getElementById('artifact-image').src = "http://cdn.playbuzz.com/cdn/b1581f3e-858f-4209-a112-5b919b0b2247/174433d6-0f1e-4f3b-ba7a-1ddb843c38b9.jpg";
         $scope.artifactState = 'modal-list-show';
         $scope.$digest();
-        // alert("tour all done!")
-        //$scope.currentWaypoint = $scope.route.length;
-        //document.getElement
-        //document.appendChild
       }
     };
 
@@ -233,12 +224,7 @@ module.exports = function(app) { //app === an angular module
       if ($scope.currentWaypoint < $scope.currentTour.route.length) {
         $scope.artifactState = 'modal-list-hide';
       } else if ($scope.currentTour.route.length === $scope.currentWaypoint) {
-
-        document.getElementById('artifact-image').src = "http://cdn.playbuzz.com/cdn/b1581f3e-858f-4209-a112-5b919b0b2247/174433d6-0f1e-4f3b-ba7a-1ddb843c38b9.jpg";
         $scope.artifactState = 'modal-list-show';
-        //$scope.currentTour.route[$scope.currentWaypoint].artifact.url = 'http://cdn.playbuzz.com/cdn/b1581f3e-858f-4209-a112-5b919b0b2247/174433d6-0f1e-4f3b-ba7a-1ddb843c38b9.jpg'
-        $scope.artifactState = 'modal-list-show';
-        // $scope.$digest();
         $location.path('/');
       }
     };
