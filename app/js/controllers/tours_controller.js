@@ -8,6 +8,7 @@ module.exports = function(app) { //app === an angular module
     $scope.errors          = [];
     $scope.route           = [];
     $scope.tours           = [];
+    $scope.tourCoordinates = [];
     $scope.currentTour     = null;
     $scope.currentWaypoint = 0;
     $scope.currentPositionMarker = false;
@@ -17,6 +18,7 @@ module.exports = function(app) { //app === an angular module
     $scope.map = false;
     //$scope.tourListState = 'modal-list-show';
     $scope.artifactState = false;
+
 
     $scope.geoOptions = {
       enableHighAccuracy: true,
@@ -160,20 +162,14 @@ module.exports = function(app) { //app === an angular module
         callback(position);
       });
     };
-    $scope.tourCoordinates = [];
-    $scope.plotTour = function() {
 
+    $scope.plotTour = function() {
       $scope.route.forEach(function( landmark ) {
-        var rotateCoordinates = [];
         $scope.addLandmark( $scope.map, landmark.position.coordinates );
-        rotateCoordinates.push(landmark.position.coordinates[1]);
-        rotateCoordinates.push(landmark.position.coordinates[0]);
-        console.log('rotate coords');
-        console.log(rotateCoordinates);
-        $scope.tourCoordinates.push(rotateCoordinates);
+        //this creates the array of coordinates for centering the map
+        //it flips the incoming coords from [long, lat] to [lat, long]
+        $scope.tourCoordinates.push(        [landmark.position.coordinates[1], landmark.position.coordinates[0]]);
       });
-      console.log('tourCoords');
-      console.log($scope.tourCoordinates);
       $scope.map.fitBounds($scope.tourCoordinates);
     };
 
