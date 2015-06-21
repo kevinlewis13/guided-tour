@@ -216,7 +216,7 @@ module.exports = function(app) { //app === an angular module
         node.appendChild(text);
         document.getElementById('waypoint-modal').appendChild(node);
         document.getElementById('endbutton').innerHTML = "Take another tour!";
-        document.getElementById('artifact-image').src = "http://cdn.playbuzz.com/cdn/b1581f3e-858f-4209-a112-5b919b0b2247/174433d6-0f1e-4f3b-ba7a-1ddb843c38b9.jpg";
+        //document.getElementById('artifact-image').src = "http://cdn.playbuzz.com/cdn/b1581f3e-858f-4209-a112-5b919b0b2247/174433d6-0f1e-4f3b-ba7a-1ddb843c38b9.jpg";
         $scope.artifactState = 'modal-list-show';
         $scope.$digest();
         // alert("tour all done!")
@@ -233,6 +233,9 @@ module.exports = function(app) { //app === an angular module
       if ($scope.currentWaypoint < $scope.currentTour.route.length) {
         $scope.artifactState = 'modal-list-hide';
       } else if ($scope.currentTour.route.length === $scope.currentWaypoint) {
+
+        document.getElementById('artifact-image').src = "http://cdn.playbuzz.com/cdn/b1581f3e-858f-4209-a112-5b919b0b2247/174433d6-0f1e-4f3b-ba7a-1ddb843c38b9.jpg";
+        $scope.artifactState = 'modal-list-show';
         //$scope.currentTour.route[$scope.currentWaypoint].artifact.url = 'http://cdn.playbuzz.com/cdn/b1581f3e-858f-4209-a112-5b919b0b2247/174433d6-0f1e-4f3b-ba7a-1ddb843c38b9.jpg'
         $scope.artifactState = 'modal-list-show';
         // $scope.$digest();
