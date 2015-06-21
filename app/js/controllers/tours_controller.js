@@ -174,6 +174,7 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.addLandmark = function( map, position, options ) {
+      //could this somehow go into the plot tour? it's using the same rotated coordinates. Maybe right after the fitBounds call.
       L.circle([ position[1], position[0] ], 10, {
         color: 'red',
         fill: '#fca'
