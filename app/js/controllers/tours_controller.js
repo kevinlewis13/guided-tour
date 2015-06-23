@@ -8,6 +8,7 @@ module.exports = function(app) { //app === an angular module
     $scope.errors          = [];
     $scope.route           = [];
     $scope.tours           = [];
+    $scope.tourCoordinates = [];
     $scope.currentTour     = null;
     $scope.currentWaypoint = 0;
     $scope.currentPositionMarker = false;
@@ -17,6 +18,7 @@ module.exports = function(app) { //app === an angular module
     $scope.map = false;
     //$scope.tourListState = 'modal-list-show';
     $scope.artifactState = false;
+
 
     $scope.geoOptions = {
       enableHighAccuracy: true,
@@ -88,6 +90,7 @@ module.exports = function(app) { //app === an angular module
       // }, 3000)
       if ( navigator.geolocation ) {
         if ( window.watcher ) {
+          //this console.log triggers only on starting a tour
           console.log( 'watcher id: ' + window.watcher );
           // navigator.geolocation.clearWatch( window.watcher );
         }
@@ -123,9 +126,8 @@ module.exports = function(app) { //app === an angular module
     };
 
     $scope.startTour = function(tour) {
+      $scope.onTour = true; // to get buttons to leave, most likely there's a better way, possibly with :
       //$scope.tourListState = 'modal-list-hide';
-
-      $scope.onTour = true; // to get buttons to leave, most likely there's a better way
       $scope.route = tour.tour.route;
       $scope.trackUser(function(position) {
         console.log("location found");
@@ -137,7 +139,6 @@ module.exports = function(app) { //app === an angular module
 
       if ($scope.currentTour !== tour.tour) {
         $scope.currentTour = tour.tour;
-        // $scope.currentWaypoint = 0;
       }
     };
 
@@ -161,24 +162,19 @@ module.exports = function(app) { //app === an angular module
         callback(position);
       });
     };
-    $scope.tourCoordinates = [];
-    $scope.plotTour = function() {
 
+    $scope.plotTour = function() {
       $scope.route.forEach(function( landmark ) {
-        var rotateCoordinates = [];
         $scope.addLandmark( $scope.map, landmark.position.coordinates );
-        rotateCoordinates.push(landmark.position.coordinates[1]);
-        rotateCoordinates.push(landmark.position.coordinates[0]);
-        console.log('rotate coords');
-        console.log(rotateCoordinates);
-        $scope.tourCoordinates.push(rotateCoordinates);
+        //this creates the array of coordinates for centering the map
+        //it flips the incoming coords from [long, lat] to [lat, long]
+        $scope.tourCoordinates.push(        [landmark.position.coordinates[1], landmark.position.coordinates[0]]);
       });
-      console.log('tourCoords');
-      console.log($scope.tourCoordinates);
       $scope.map.fitBounds($scope.tourCoordinates);
     };
 
     $scope.addLandmark = function( map, position, options ) {
+      //could this somehow go into the plot tour? it's using the same rotated coordinates. Maybe right after the fitBounds call.
       L.circle([ position[1], position[0] ], 10, {
         color: 'red',
         fill: '#fca'
@@ -188,7 +184,6 @@ module.exports = function(app) { //app === an angular module
     $scope.compareDistance = function( tour, position ) {
       var latLandMark;
       var lngLandmark;
-      //$scope.currentWaypoint = $scope.currentWaypoint++ || 0;
       console.log( $scope.currentWaypoint );
       if ($scope.currentWaypoint < $scope.route.length) {
         lngLandmark = $scope.route[$scope.currentWaypoint].position.coordinates[0];
@@ -201,13 +196,10 @@ module.exports = function(app) { //app === an angular module
 
         if (distance <= 20000) {
           console.log( distance );
-          //$scope.updateClass();
           $scope.artifactState = 'modal-list-show';
           $scope.$digest();
-          //$scope.artifactState = true;
-          //alert( $scope.route[$scope.currentWaypoint].artifact.description )
-          //$scope.currentWaypoint++;
         } else {
+          //could be an else if so that if user walks away from waypoint without clicking ok it auto hides the modal.
           // $scope.artifactState = 'modal-list-hide';
         }
       } else if ($scope.currentWaypoint === $scope.currentTour.route.length) {
@@ -219,10 +211,6 @@ module.exports = function(app) { //app === an angular module
         document.getElementById('artifact-image').src = "http://cdn.playbuzz.com/cdn/b1581f3e-858f-4209-a112-5b919b0b2247/174433d6-0f1e-4f3b-ba7a-1ddb843c38b9.jpg";
         $scope.artifactState = 'modal-list-show';
         $scope.$digest();
-        // alert("tour all done!")
-        //$scope.currentWaypoint = $scope.route.length;
-        //document.getElement
-        //document.appendChild
       }
     };
 
@@ -233,9 +221,7 @@ module.exports = function(app) { //app === an angular module
       if ($scope.currentWaypoint < $scope.currentTour.route.length) {
         $scope.artifactState = 'modal-list-hide';
       } else if ($scope.currentTour.route.length === $scope.currentWaypoint) {
-        //$scope.currentTour.route[$scope.currentWaypoint].artifact.url = 'http://cdn.playbuzz.com/cdn/b1581f3e-858f-4209-a112-5b919b0b2247/174433d6-0f1e-4f3b-ba7a-1ddb843c38b9.jpg'
         $scope.artifactState = 'modal-list-show';
-        // $scope.$digest();
         $location.path('/');
       }
     };
